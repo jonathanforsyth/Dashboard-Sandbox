@@ -1096,29 +1096,3 @@ body.hide-mbcbp-columns .mbcbp-cell {
     }
     
      
-@media print {
-    /* 1. Force the print manager to treat headers as repeating elements */
-    thead {
-        display: table-header-group !important;
-    }
-    
-    /* 2. Prevent row text blocks from awkwardly splitting mid-sentence across sheets */
-    tr {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-    }
-
-    /* 3. Strip away sticky positioning elements that confuse print engines */
-    th.sticky-col-header, 
-    thead th {
-        position: static !important;
-        background-color: #f2f2f2 !important; /* Adds a clean background shade to headers */
-        color: #000000 !important;
-    }
-
-    /* 4. Ensure table elements respect normal print flows */
-    table {
-        border-collapse: collapse !important;
-        width: 100% !important;
-    }
-}

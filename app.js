@@ -2133,133 +2133,126 @@ renderForecastOutput() {
 }
 } // SEALS THE ENTIRE APP CONTROLLER CLASS OBJECT STRUCTURE CLEANLY!
 
-function printDashboardSection(sectionId) {
-    const targetSection = document.getElementById(sectionId);
-    if (!targetSection) {
-        console.error(`Section ID ${sectionId} not found.`);
+// Fortified Master PDF Generator Function
+async function downloadTableAsPDF(tbodyId, filename = 'projections.pdf') {
+    // 1. Ensure the library is loaded into memory before running any code
+    if (typeof html2pdf === 'undefined' && typeof window.html2pdf === 'undefined') {
+        console.log("Library missing from scope. Injecting local asset file...");
+        try {
+            await new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'html2pdf.bundle.min.js'; // Points to your local asset file
+                script.onload = resolve;
+                script.onerror = () => reject(new Error("Local file injection blocked or missing."));
+                document.head.appendChild(script);
+            });
+        } catch (scriptError) {
+            console.error(scriptError.message);
+            alert("Could not load the PDF engine. Check if html2pdf.bundle.min.js exists in your directory.");
+            return;
+        }
+    }
+
+    // 2. Identify target elements
+    const tbody = document.getElementById(tbodyId);
+    const element = tbody ? tbody.closest('table') : null;
+    const wrapper = tbody ? tbody.closest('.summary-grid-viewport-wrapper') : null;
+    
+    if (!element || !wrapper) {
+        console.error(`🔍 PDF Diagnostic Details for ${tbodyId}:`, { tbody, element, wrapper });
         return;
     }
 
-    // 1. Open a clean, empty printing tab
-    const printWindow = window.open('', '_blank');
+    // 3. Save original layout configurations
+    const originalOverflowX = wrapper.style.overflowX || getComputedStyle(wrapper).overflowX;
+    const originalOverflowY = wrapper.style.overflowY || getComputedStyle(wrapper).overflowY;
+    const originalMaxHeight = wrapper.style.maxHeight || getComputedStyle(wrapper).maxHeight;
+    const originalHeight = wrapper.style.height || getComputedStyle(wrapper).height;
+    const originalWidth = element.style.width;
+
+    // Save cell-specific layout data
+    const tableCells = element.querySelectorAll('th, td');
+    const savedCellPaddings = [];
     
-    // 2. Clone the content of your HTML page's style sheets
-    let stylesHtml = '';
-    for (const sheet of document.styleSheets) {
-        try {
-            if (sheet.href) {
-                stylesHtml += `<link rel="stylesheet" href="${sheet.href}">`;
-            } else {
-                const rules = Array.from(sheet.cssRules).map(rule => rule.cssText).join('\n');
-                stylesHtml += `<style>${rules}</style>`;
+    try {
+        // 4. Temporarily unroll scroll wrappers completely for image processing
+        wrapper.style.setProperty('overflow', 'visible', 'important');
+        wrapper.style.setProperty('overflow-x', 'visible', 'important');
+        wrapper.style.setProperty('overflow-y', 'visible', 'important');
+        wrapper.style.setProperty('max-height', 'none', 'important');
+        wrapper.style.setProperty('height', 'auto', 'important');
+        element.style.setProperty('width', 'auto', 'important');
+
+        // Apply ultra-compact padding and clean formatting rules directly to data cells
+        tableCells.forEach((cell, idx) => {
+            savedCellPaddings.push(cell.style.padding);
+            cell.style.setProperty('padding', '2px 1px', 'important');
+            cell.style.setProperty('white-space', 'nowrap', 'important');
+        });
+
+        // Let the iPad webview repaint the complete expanded DOM structure
+        await new Promise(resolve => setTimeout(resolve, 200));
+
+        const isRetirementTable = tbodyId === 'grandRetirementProjectionsTableBody';
+        const pageFormat = isRetirementTable ? 'letter' : 'a3';
+
+        // 5. Build core engine configuration parameters
+        const opt = {
+            margin:       [0.3, 0.2, 0.3, 0.2], // [top, left, bottom, right] margins
+            filename:     filename,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { 
+                scale: 1.2,       // Balanced scale to protect memory bounds on 480 rows
+                useCORS: true,     
+                scrollY: 0,
+                scrollX: 0,
+                windowWidth: element.scrollWidth // Snapshot the complete horizontal boundaries
+            },
+            jsPDF:        { unit: 'in', format: pageFormat, orientation: 'landscape' },
+            // 🌟 FORCES REPEATING HEADERS: Overrides iOS native rendering limitations
+            pdfCallback: function(pdf) {
+                // Tells the underlying pdf renderer to keep track of text boundaries
+                pdf.repeatHeaders = true;
             }
-        } catch (e) {
-            // Catch cross-origin stylesheet reading restrictions safely
-        }
+        };
+
+        // 6. Execute direct canvas building
+        const pdfEngine = window.html2pdf || html2pdf;
+        await pdfEngine().set(opt).from(element).save();
+
+    } catch (error) {
+        console.error("Error generating PDF:", error.message || error.toString());
+    } finally {
+        // 7. Restore layout defaults instantly
+        wrapper.style.overflowX = originalOverflowX;
+        wrapper.style.overflowY = originalOverflowY;
+        wrapper.style.maxHeight = originalMaxHeight;
+        wrapper.style.height = originalHeight;
+        element.style.width = originalWidth;
+        
+        tableCells.forEach((cell, idx) => {
+            if (savedCellPaddings[idx]) {
+                cell.style.padding = savedCellPaddings[idx];
+            } else {
+                cell.style.removeProperty('padding');
+            }
+            cell.style.removeProperty('white-space');
+        });
+
+        wrapper.style.removeProperty('overflow');
+        wrapper.style.removeProperty('max-height');
     }
-
-    // 3. Extract the form data values manually so user edits aren't lost
-    // (Standard element clones drop active text input states)
-    const clonedSection = targetSection.cloneNode(true);
-    const originalInputs = targetSection.querySelectorAll('input, select, textarea');
-    const clonedInputs = clonedSection.querySelectorAll('input, select, textarea');
-    
-    originalInputs.forEach((input, index) => {
-        if (input.type === 'checkbox' || input.type === 'radio') {
-            clonedInputs[index].checked = input.checked;
-        } else {
-            clonedInputs[index].value = input.value;
-        }
-    });
-
-    // 4. Inject styles, forms, and tables into the temporary document view
-    printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Financial Report Export</title>
-            ${stylesHtml}
-            <style>
-                /* Inject specific Print Rules right into the print canvas */
-                @media print {
-                    @page {
-                        size: letter landscape;
-                        margin: 0.4in;
-                    }
-                    body {
-                        background: white !important;
-                        color: black !important;
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                    }
-                    /* Ensure scroll boundaries strip away to reveal all 480 rows */
-                    .summary-grid-viewport-wrapper {
-                        overflow: visible !important;
-                        max-height: none !important;
-                        height: auto !important;
-                        display: block !important;
-                    }
-                    /* REPEAT HEADERS RULE: Forces table headers onto every page break */
-                    thead {
-                        display: table-header-group !important;
-                    }
-                    tr {
-                        page-break-inside: avoid !important;
-                    }
-                    /* Scale widths specifically for your columns */
-                    table {
-                        width: 100% !important;
-                        border-collapse: collapse !important;
-                        table-layout: auto !important;
-                    }
-                    /* Dynamic print font styling scaling */
-                    #grandProjectionsLedgerTable {
-                        font-size: 7.5px !important; /* 27 Columns fit */
-                    }
-                    #grandRetirementProjectionsLedgerTable {
-                        font-size: 10px !important; /* 13 Columns fit */
-                    }
-                    th, td {
-                        padding: 3px 2px !important;
-                        word-wrap: break-word !important;
-                    }
-                    /* Keep custom highlighting formatting vibrant */
-                    * {
-                        -webkit-print-color-adjust: exact !important;
-                        print-color-adjust: exact !important;
-                    }
-                    /* Hide user interactive elements on print pages */
-                    button, .no-print {
-                        display: none !important;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="print-container">
-                ${clonedSection.innerHTML}
-            </div>
-        </body>
-        </html>
-    `);
-
-    printWindow.document.close();
-
-    // 5. Fire print command once layout resources finish executing
-    printWindow.onload = function() {
-        printWindow.print();
-        // Automatically close the temporary background tab after print prompt exits
-        setTimeout(() => printWindow.close(), 500);
-    };
 }
 
+// Map the HTML section actions directly to target the specific processing arrays
 function downloadWealthPDF() {
-    printDashboardSection('monthlyWealthDashboardSection'); 
+    downloadTableAsPDF('grandProjectionsTableBody', 'monthly-wealth-projections.pdf');
 }
 
 function downloadRetirementPDF() {
-    printDashboardSection('grandSummaryDashboardPanel'); 
+    downloadTableAsPDF('grandRetirementProjectionsTableBody', 'annual-retirement-projections.pdf');
 }
 
+// Bind to global window space for the iPad browser buttons
 window.downloadWealthPDF = downloadWealthPDF;
 window.downloadRetirementPDF = downloadRetirementPDF;
-

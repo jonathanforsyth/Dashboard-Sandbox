@@ -208,10 +208,9 @@
   <div class="summary-table-header-strip"> 
     <h3>Monthly Wealth Projections</h3> 
     <p>Month-by-month tracking from now to retirement age. <span style="color: #e6a23c; font-weight: bold;">Yellow</span> indicates an IRS Individual or Combined contribution limit will be reached.</p> 
-    <!-- 🌟 Cleaned print action button targeting only this specific component block -->
-    <button onclick="printDashboardSection('monthlyWealthDashboardSection')" class="no-print" style="padding: 8px 16px; background-color: #e6a23c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 10px;">
-        Export Monthly Report to PDF
-    </button>
+    <button onclick="downloadWealthPDF()" class="no-print" style="padding: 8px 16px; background-color: #e6a23c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+    Export Monthly Report to PDF
+</button>
   </div> 
   
   <div class="summary-grid-viewport-wrapper"> 
