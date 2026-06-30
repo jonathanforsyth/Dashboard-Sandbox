@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<!--When new year limits need updating, search "new year update" to find blocks needing the update-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Wealth Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body class="app-body">
+
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+        <div class="brand">Investment Calculator for Delta Pilots</div>
+        <nav class="nav-links">
+            <a href="app2.html" class="nav-item"> 
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- Y Axis -->
+                    <path d="M5 4v15" />
+                    <!-- X Axis -->
+                    <path d="M5 19h15" />
+                    <!-- Upward Growth Arrow -->
+                    <path d="M8 14l4-5 3 3 4-5" />
+                    <path d="M16 7h3v3" />
+                </svg> 
+                <span>Retirement</span> 
+            </a>
+
+            <a href="javascript:void( window.open( 'https://form.jotform.com/261366475514057', 'blank', 'scrollbars=yes, toolbar=no, width=700, height=500' ) )" class="nav-item">
+  <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" fill="currentColor"/></svg>
+  <span>Give Feedback</span>
+</a>
+
+            
+        </nav>
+    </header>
+<!-- Main Dashboard Engine --> 
+<main class="dashboard-container"> 
+    <section class="action-panel">
+        <button class="menu-btn" data-target="careerForm">Update Career Profile</button>
+        <button class="menu-btn" data-target="fortyOneKForm">Update 401k Contributions</button>
+        <button class="menu-btn" data-target="hsaForm">Update HSA Info</button>
+        <button class="menu-btn" data-target="iraForm">Update IRA Info</button>
+        <button class="menu-btn" data-target="brokerageForm">Update Brokerage Info</button>
+        <button class="menu-btn" data-target="spouseAccountsForm">Update Spouse Accounts</button>
+        <button class="menu-btn" data-target="tspForm">Update TSP Info</button>
+    </section>
+
+        
+<!-- Main Dashboard Engine Section -->
+<section class="hero-banner2" style="background: transparent !important; padding: 0; box-shadow: none; border: none !important;"> 
+    
+    <!-- SECTION 1: In-Retirement Withdrawal Calculator --> 
+    <div style="background: #1e1e1e; border-top: none !important; border-bottom: none !important; border-right: none !important; border-left: 4px solid #A020F0; padding: 15px; border-radius: 6px; box-shadow: none;"> 
+        <div class="hero-text"> 
+            <h1 style="margin: 0 0 5px 0; font-size: 1.4rem; font-weight: 700; color: #fff;">Are you saving enough?</h1> 
+            <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #8a8a8f; line-height: 1.4;">Head over to the In-Retirement Withdrawal Calculator to experiment with various withdrawal strategies and see how your new plan holds up.</p> 
+        </div> 
+        <button class="menu-btn secondary-btn" data-target="Modal" onclick="window.location.href='app2.html';" style="width: 100%; text-align: center;"> 
+            In-Retirement Withdrawal Calculator 
+        </button> 
+    </div> 
+
+    <!-- Clean spacer element --> 
+    <div style="height: 15px; background: transparent; border: none !important;"></div> 
+
+    <!-- SECTION 2: Laptop & iPad Only Section (Venmo Content Button Display Panel) --> 
+    <div class="desktop-only-section" style="background: #1e1e1e; border-top: none !important; border-bottom: none !important; border-right: none !important; border-left: 4px solid #ffb300; padding: 15px; border-radius: 6px; box-shadow: none; margin: 0;"> 
+    <div class="hero-text" style="margin-top: 0 !important; padding-top: 0 !important;">
+            <h1 style="margin: 0 0 5px 0; font-size: 1.4rem; font-weight: 700; color: #fff;">Do you like this calculator?</h1> 
+        </div> 
+        <!-- Trigger Button --> 
+        <button class="menu-btn third-btn" data-target="venmoModal" style="width: 100%; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 8px;"> 
+            <!-- Coffee Cup SVG Icon --> 
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block; flex-shrink: 0;"> 
+                <path d="M17 8H6v8a4 4 0 0 0 4 4h3a4 4 0 0 0 4-4V8z" /> 
+                <path d="M17 11h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" /> 
+                <path d="M9 2v2" /> 
+                <path d="M13 2v2" /> 
+            </svg> 
+            <span>Buy me a coffee</span> 
+        </button> 
+    </div>
+
+</section> <!-- This clean wrapper element terminates your main hero-banner2 structure safely -->
+
+
+<!-- ========================================== -->
+<!-- GLOBAL MODAL POPUP WINDOW STAGES           -->
+<!-- ========================================== -->
+<!-- 1. The Outer Dimming Overlay Backdrop Layer -->
+<div class="nested-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); z-index: 99999; display: flex; align-items: center; justify-content: center; pointer-events: none;"> 
+    
+    <!-- 2. The Inner Content Card Box (ID placed here handles centering perfectly) -->
+    <div id="venmoModal" class="nested-modal-box modal-window" style="margin: auto; max-width: 340px; width: 90%; box-sizing: border-box; background: #1e1e1e !important; border: 1px solid #3a3a3c !important; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); pointer-events: auto; display: none;"> 
+        
+        <!-- Header Text --> 
+        <p style="color: #ffffff; font-size: 15px; line-height: 1.4; margin: 0 0 15px 0; font-family: Arial, sans-serif; text-align: center;"> 
+            If you feel so inclined, feel free to buy me a coffee to support the costs of maintaining this site. 
+        </p> 
+        
+        <!-- Venmo QR Code Image --> 
+        <img src="images/venmo-qr.jpg" alt="Venmo QR Code" style="width: 100%; max-width: 220px; border-radius: 6px; height: auto; display: block; margin: 0 auto 15px auto;"> 
+        
+        <!-- Close Button --> 
+        <button class="nested-modal-close-btn cancel-btn" style="margin: 5px auto 0 auto; display: block; background: #3a3a3c; color: #fff; border: none; padding: 8px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"> 
+            Close 
+        </button> 
+        
+    </div>
+</div>
+
+<!-- MULTI-YEAR HORIZON FORECAST DISPLAY MATRIX -->
+<section id="grandSummaryDashboardPanel" class="summary-table-section" style="display: block;">
+    <!-- RETIREMENT INSIGHT TARGET SUMMARY METRICS PANEL -->
+    <div id="retirementInsightCardGrid" style="display: flex; flex-direction: column; gap: 15px;">
+        
+        <div class="summary-table-header-strip">
+            <h3 style="color: #4cd964;">Grand Total</h3>
+        </div>
+        
+        <!-- TOP ROW CONTAINER: Controlled by the style classes above -->
+        <div class="responsive-top-grid">
+            
+            <!-- 1. Grand Total -->
+            <div class="all-accounts-card metric-card" style="background: #1e1e1e; border-left: 4px solid #4cd964; padding: 12px 15px; border-radius: 6px;">
+                <div style="font-size: 1.00rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">All Retirement Accounts</div>
+                <div id="tileGrandCombined" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+            </div>
+            
+            <!-- 2. Total Traditional -->
+            <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #A020F0; padding: 12px 15px; border-radius: 6px;">
+                <div style="font-size: 1.00rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Total Traditional</div>
+                <div id="tileGrandTrad" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+            </div>
+
+            <!-- 3. Total Roth -->
+            <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #A020F0; padding: 12px 15px; border-radius: 6px;">
+                <div style="font-size: 1.00rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Total Roth</div>
+                <div id="tileGrandRoth" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+            </div>
+        </div>
+
+        <div class="summary-table-header-strip">
+        <h3 style="color: #ffb300;">Grand Total Breakdown</h3>
+        </div>
+        <!-- BOTTOM ROW CONTAINER: Updated to beautifully flow all 10 account breakdown boxes -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 5px;">
+        <!-- Total 401k -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Total 401k</div>
+            <div id="tileCombined401k" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total MBCBP -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Total MBCBP</div>
+            <div id="tileMBCBPBal" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Roth IRA -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Your Roth IRA</div>
+            <div id="tileRothIRA" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Traditional IRA -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Your Trad IRA</div>
+            <div id="tilePilotTradIRA" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Spouse Roth IRA -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Spouse Roth IRA</div>
+            <div id="tileSpouseRothIRA" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Spouse Traditional IRA -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Spouse Trad IRA</div>
+            <div id="tileSpouseTradIRA" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total TSP -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Total TSP</div>
+            <div id="tileTSPTotal" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Pilot HSA -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Your HSA</div>
+            <div id="tilePilotHSA" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Spouse HSA -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Spouse HSA</div>
+            <div id="tileSpouseHSA" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        <!-- Total Standalone Brokerage -->
+        <div class="metric-card" style="background: #1e1e1e; border-left: 4px solid #10B981; padding: 12px 15px; border-radius: 6px;">
+            <div style="font-size: 0.90rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Brokerage</div>
+            <div id="tileBrokerageBal" style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 4px;">$0</div>
+        </div>
+        </div>
+     </div>
+</section>
+
+
+
+
+<section id="monthlyWealthDashboardSection" class="summary-table-section" style="display: block;"> 
+  <div class="summary-table-header-strip"> 
+    <h3>Monthly Wealth Projections</h3> 
+    <p>Month-by-month tracking from now to retirement age. <span style="color: #e6a23c; font-weight: bold;">Yellow</span> indicates an IRS Individual or Combined contribution limit will be reached.</p> 
+    <!-- 🌟 Cleaned print action button targeting only this specific component block -->
+    <button onclick="printDashboardSection('monthlyWealthDashboardSection')" class="no-print" style="padding: 8px 16px; background-color: #e6a23c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 10px;">
+        Export Monthly Report to PDF
+    </button>
+  </div> 
+  
+  <div class="summary-grid-viewport-wrapper"> 
+    <table id="grandProjectionsLedgerTable"> 
+      <thead> 
+        <tr>
+          <th class="sticky-col-header">Month</th>
+          <th>Seat</th>
+          <th>Pay Rate</th>
+          <th>Monthly Income</th>
+          <th>Age</th>
+          <th id="thCompanyDC">Company Deposit</th>
+          <th id="thF1kSpill" class="mbcbp-header">Spill (MBCBP)</th>
+          <th id="thMBCBPBal" class="mbcbp-header">MBCBP Balance</th>
+          <th id="thPersonalTrad">Personal 401k Traditional</th>
+          <th id="thPersonalRoth">Personal 401k Roth</th>
+          <th id="thYtdIndividual">YTD IRS Individual Limit</th>
+          <th id="thYtdCombined">YTD IRS Combined Limit</th>
+          <th id="thPsTrad">PS 401k Traditional</th>
+          <th id="thPsRoth">PS 401k Roth</th>
+          <th id="th401a">401(a)</th>
+          <th id="thCombined401k">401k Balance</th>
+          <th id="thPilotHsa">HSA Balance</th>
+          <th id="thTSP">Total TSP Balance</th>
+          <th id="thPilotRoth">Pilot Roth IRA</th>
+          <th id="thPilotTradIra">Pilot Traditional IRA</th>
+          <th id="thBrokerage">Brokerage Balance</th>
+          <th id="thSpouseRoth">Spouse Roth IRA</th>
+          <th id="thSpouseTrad">Spouse Traditional IRA</th>
+          <th id="thSpouseHsa">Spouse HSA</th>
+          <th id="thGrandTrad">Grand Total Traditional</th>
+          <th id="thGrandRoth">Grand Total Roth</th>
+          <th id="thGrandCombined">Grand Total Combined</th>
+        </tr>
+      </thead> 
+      <tbody id="grandProjectionsTableBody"> 
+        <!-- Calculated ledger entries are injected here dynamically by app.js --> 
+      </tbody> 
+    </table> 
+  </div> 
+</section>
+    </main>
+
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin: 40px auto 20px auto; padding: 0 20px 90px 20px; max-width: 1200px; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; width: 100%;">
+
+    <!-- 1. BACK TO HOMEPAGE LINK -->
+    
+
+    <!-- 2. FINANCIAL DISCLAIMER SUBTEXT -->
+    <p style="
+        margin: 0 0 20px 0; 
+        font-size: 11px; 
+        color: #8a8a8f; 
+        line-height: 1.5;
+        font-weight: 400;
+    ">
+        <strong>Use at your own risk:</strong> This website application is a financial planning tool for informational purposes only and does not provide professional financial advice. The website creator is not a certified financial planner or licensed financial advisor. Any decisions you make based on this website are your sole responsibility, and the creator is not liable for financial losses or outcomes resulting from its use.
+    </p>
+
+    <!-- 3. INDEPENDENT OPERATION NOTICE -->
+    <h3 style="
+        margin: 0; 
+        font-size: 12px; 
+        color: #8a8a8f; 
+        line-height: 1.4;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    ">
+        This website is independently operated and is not affiliated with, endorsed by, or sponsored by Delta Air Lines
+    </h3>
+    <br>
+    <a href="index.html" style="
+        color: #ffffff; 
+        text-decoration: none; 
+        font-size: 16px; 
+        font-weight: 600;
+        margin-bottom: 25px;
+        transition: opacity 0.2s ease;
+    " onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+        &larr; Back to Homepage
+    </a>
+</div>
+
+
+    <!-- Contextual Bottom Navigation Bar (Visible on Mobile viewports only) -->
+    <footer class="bottom-nav"> 
+    <a href="app2.html" class="nav-item active"> 
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Y Axis -->
+        <path d="M5 4v15" />
+        <!-- X Axis -->
+        <path d="M5 19h15" />
+        <!-- Upward Growth Arrow -->
+        <path d="M8 14l4-5 3 3 4-5" />
+        <path d="M16 7h3v3" />
+    </svg> 
+    <span>Retirement</span> 
+</a>
+
+    <!-- Venmo Deep Link Action Button --> 
+     <a href="venmo://paycharge?txn=pay&recipients=pilotwealthcalculator" 
+       onclick="window.location.href='https://venmo.com/pilotwealthcalculator'; return false;" class="nav-item">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 8H6v8a4 4 0 0 0 4 4h3a4 4 0 0 0 4-4V8z" />
+        <path d="M17 11h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
+        <path d="M9 2v2" />
+        <path d="M13 2v2" />
+    </svg>
+    <span>Buy me a coffee</span>
+</a> 
+
+
+    <a href="javascript:void( window.open( 'https://form.jotform.com/261366475514057', 'blank', 'scrollbars=yes, toolbar=no, width=700, height=500' ) )" class="nav-item"> 
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" fill="currentColor"/></svg> 
+        <span>Give Feedback</span> 
+    </a> 
+</footer>
+
+
+
+
+    <!-- Overlay Layer Component for Popups/Modals -->
+    <div id="modalOverlay" class="modal-overlay">
+        
+        <!-- A. CAREER DATA ENTRY FORM WINDOW -->
+<div id="careerForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>Career Data</h2>
+    </div>
+    <form class="modal-form">
+  <div class="form-group"> 
+    <label>Birth Date <span class="req">Required</span></label> 
+    <div class="input-wrapper"> 
+      <input type="date" id="birthDate" value="1979-01-01" required> 
+    </div> 
+  </div> 
+  <div class="form-group"> 
+    <label>Hire Date <span class="req">Required</span></label> 
+    <div class="input-wrapper"> 
+      <input type="date" id="hireDate" value="2017-01-01" required> 
+    </div> 
+  </div> 
+  <div class="form-group"> 
+    <label>Retirement Date Strategy <span class="req">Required</span></label> 
+    <div class="input-wrapper select-arrow"> 
+      <select id="retirementStrategy" required> 
+        <option value="By Age" selected>By Age</option> 
+        <option value="By Date">By Date</option> 
+      </select> 
+    </div> 
+  </div> 
+  <div class="form-group" id="retirementAgeGroup"> 
+    <label>Retirement Age Milestone <span class="req">Required</span></label> 
+    <div class="input-wrapper select-arrow"> 
+      <select id="retirementAge"> 
+        <option value="50">50</option> 
+        <option value="51">51</option> 
+        <option value="52">52</option> 
+        <option value="53">53</option> 
+        <option value="54">54</option> 
+        <option value="55">55</option> 
+        <option value="56">56</option> 
+        <option value="57">57</option> 
+        <option value="58">58</option> 
+        <option value="59">59</option> 
+        <option value="60">60</option> 
+        <option value="61">61</option> 
+        <option value="62">62</option> 
+        <option value="63">63</option> 
+        <option value="64">64</option> 
+        <option value="65" selected>65</option> 
+      </select> 
+    </div> 
+  </div> 
+  <div class="form-group" id="retirementDateGroup" style="display: none;"> 
+    <label>Custom Target Retirement Date <span class="req">Required</span></label> 
+    <div class="input-wrapper"> 
+      <input type="date" id="retirementCustomDate"> 
+    </div> 
+  </div> 
+  <!-- CURRENT SEAT & HOURS SELECTOR ARRAY --> 
+  <div>
+   <div style="font-weight: 600; font-size: 1.0rem; color: #F59E0B; text-align: center; margin-bottom: 1px; padding-bottom: 0;">Your current category</div>
+                <div style="color: var(--text-muted); font-size: 0.8rem; text-align: center; margin-top: 1px; margin-bottom: 12px; padding-top:0;">Defined by contract pay tables</div>
+                    </div>
+  <div class="form-group"> 
+    <label>Current Aircraft Seat <span class="req">Required</span></label> 
+    <div class="input-wrapper select-arrow"> 
+      <select id="aircraftSeat" required> 
+        <optgroup label="Airbus A350"> 
+          <option value="350A">350 Captain</option> 
+          <option value="350B">350 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Airbus A330"> 
+          <option value="330A">330 Captain</option> 
+          <option value="330B">330 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Boeing 767-400"> 
+          <option value="764A">764 Captain</option> 
+          <option value="764B">764 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Boeing 767-300"> 
+          <option value="763A">7ER Captain</option> 
+          <option value="763B">7ER First Officer</option> 
+        </optgroup> 
+        <optgroup label="Airbus A321 NEO"> 
+          <option value="32NA">32N Captain</option> 
+          <option value="32NB">32N First Officer</option> 
+        </optgroup> 
+        <optgroup label="Airbus A321"> 
+          <option value="321A">321 Captain</option> 
+          <option value="321B">321 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Airbus A320"> 
+          <option value="320A">320 Captain</option> 
+          <option value="320B" selected>320 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Boeing 737-900"> 
+          <option value="739A">739 Captain</option> 
+          <option value="739B">739 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Boeing 737-800"> 
+          <option value="738A">738 Captain</option> 
+          <option value="738B">738 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Airbus A220-300"> 
+          <option value="223A">223 Captain</option> 
+          <option value="223B">223 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Airbus A220-100"> 
+          <option value="221A">221 Captain</option> 
+          <option value="221B">221 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Boeing 717"> 
+          <option value="717A">717 Captain</option> 
+          <option value="717B">717 First Officer</option> 
+        </optgroup> 
+        <optgroup label="Boeing 777"> 
+          <option value="777A">777 Captain</option> 
+          <option value="777B">777 First Officer</option> 
+        </optgroup> 
+      </select> 
+    </div> 
+  </div>
+  <!-- FIXED: Removed duplicate hoursPerMonth raw numeric input wrapper entirely from this panel view -->
+  <div class="form-group"> 
+    <label>Hours Per Month <span class="req">Required</span></label> 
+    <div class="input-wrapper select-arrow"> 
+      <select id="hoursPerMonth" required> 
+        <option value="44">44 Hours</option> <option value="45">45 Hours</option> 
+        <option value="46">46 Hours</option> <option value="47">47 Hours</option> 
+        <option value="48">48 Hours</option> <option value="49">49 Hours</option> 
+        <option value="50">50 Hours</option> <option value="51">51 Hours</option> 
+        <option value="52">52 Hours</option> <option value="53">53 Hours</option> 
+        <option value="54">54 Hours</option> <option value="55">55 Hours</option> 
+        <option value="56">56 Hours</option> <option value="57">57 Hours</option> 
+        <option value="58">58 Hours</option> <option value="59">59 Hours</option>  
+        <option value="60">60 Hours</option> <option value="61">61 Hours</option> 
+        <option value="62">62 Hours</option><option value="63">63 Hours</option> 
+        <option value="64">64 Hours</option> <option value="65">65 Hours</option> 
+        <option value="66">66 Hours</option> <option value="67">67 Hours</option> 
+        <option value="68">68 Hours</option> <option value="69">69 Hours</option> 
+        <option value="70">70 Hours</option> <option value="71">71 Hours</option> 
+        <option value="72" selected>72 Hours</option> 
+        <option value="73">73 Hours</option> <option value="74">74 Hours</option> 
+        <option value="75">75 Hours</option> <option value="76">76 Hours</option> 
+        <option value="77">77 Hours</option> <option value="78">78 Hours</option> 
+        <option value="79">79 Hours</option> <option value="80">80 Hours</option> 
+        <option value="81">81 Hours</option> <option value="82">82 Hours</option> 
+        <option value="83">83 Hours</option> <option value="84">84 Hours</option> 
+        <option value="85">85 Hours</option> <option value="86">86 Hours</option> 
+        <option value="87">87 Hours</option> <option value="88">88 Hours</option> 
+        <option value="89">89 Hours</option> <option value="90">90 Hours</option> 
+        <option value="95">95 Hours</option> <option value="100">100 Hours</option> 
+      </select> 
+    </div> 
+  </div>
+
+  <!-- START: NEW STEP 1 ADDITION -->
+  <!-- Centered Toggle Switch Row -->
+  <div class="form-group toggle-group" style="display: flex; justify-content: center; align-items: center; padding: 10px 0; margin-top: 10px;">
+    <span style="font-weight: 600; font-size: 1.0rem; margin-right: 12px; color: #3B82F6; text-align: center;">Want to vary your hours worked per month by age?</span>
+    <label class="switch-toggle"> 
+      <input type="checkbox" id="varyHoursByAgeToggle"> 
+      <span class="slider-round"></span> 
+    </label> 
+  </div>
+
+  <!-- Dynamic Variable Hours Table Wrapper -->
+  <div id="variableHoursTableGroup" style="display: none; flex-direction: column; gap: 0.75rem; margin-bottom: 15px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 6px;">
+    <div style="font-size: 0.85rem; color: #8a8a8f; text-align: center; margin-bottom: 5px;">Specify milestone age and new monthly hours:</div>
+    
+    <table style="width: 100%; border-collapse: collapse; color: #fff;">
+      <thead>
+        <tr style=" font-size: 0.85rem; color: #8a8a8f;">
+          <th style="padding: 6px; text-align: left; width: 50%;">At Milestone Age</th>
+          <th style="padding: 6px; text-align: left; width: 50%;">Change Hours To</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1 -->
+        <tr>
+          <td style="padding: 6px 4px;">
+            <div class="input-wrapper select-arrow">
+              <select id="varHoursAge1">
+                <option value="" selected>-- Select Age --</option>
+                <option value="50">Age 50</option><option value="51">Age 51</option><option value="52">Age 52</option><option value="53">Age 53</option><option value="54">Age 54</option>
+                <option value="55">Age 55</option><option value="56">Age 56</option><option value="57">Age 57</option><option value="58">Age 58</option><option value="59">Age 59</option>
+                <option value="60">Age 60</option><option value="61">Age 61</option><option value="62">Age 62</option><option value="63">Age 63</option><option value="64">Age 64</option>
+                <option value="65">Age 65</option>
+              </select>
+            </div>
+          </td>
+          <td style="padding: 6px 4px;">
+            <div class="input-wrapper select-arrow">
+              <select id="varHoursAmt1">
+                <option value="44">44 Hours</option> <option value="45">45 Hours</option> 
+        <option value="46">46 Hours</option> <option value="47">47 Hours</option> 
+        <option value="48">48 Hours</option> <option value="49">49 Hours</option> 
+        <option value="50">50 Hours</option> <option value="51">51 Hours</option> 
+        <option value="52">52 Hours</option> <option value="53">53 Hours</option> 
+        <option value="54">54 Hours</option> <option value="55">55 Hours</option> 
+        <option value="56">56 Hours</option> <option value="57">57 Hours</option> 
+        <option value="58">58 Hours</option> <option value="59">59 Hours</option>  
+        <option value="60">60 Hours</option> <option value="61">61 Hours</option> 
+        <option value="62">62 Hours</option><option value="63">63 Hours</option> 
+        <option value="64">64 Hours</option> <option value="65">65 Hours</option> 
+        <option value="66">66 Hours</option> <option value="67">67 Hours</option> 
+        <option value="68">68 Hours</option> <option value="69">69 Hours</option> 
+        <option value="70">70 Hours</option> <option value="71">71 Hours</option> 
+        <option value="72" selected>72 Hours</option> 
+        <option value="73">73 Hours</option> <option value="74">74 Hours</option> 
+        <option value="75">75 Hours</option> <option value="76">76 Hours</option> 
+        <option value="77">77 Hours</option> <option value="78">78 Hours</option> 
+        <option value="79">79 Hours</option> <option value="80">80 Hours</option> 
+        <option value="81">81 Hours</option> <option value="82">82 Hours</option> 
+        <option value="83">83 Hours</option> <option value="84">84 Hours</option> 
+        <option value="85">85 Hours</option> <option value="86">86 Hours</option> 
+        <option value="87">87 Hours</option> <option value="88">88 Hours</option> 
+        <option value="89">89 Hours</option> <option value="90">90 Hours</option> 
+        <option value="95">95 Hours</option> <option value="100">100 Hours</option> 
+              </select>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 2 -->
+        <tr>
+          <td style="padding: 6px 4px;">
+            <div class="input-wrapper select-arrow">
+              <select id="varHoursAge2">
+                <option value="" selected>-- Select Age --</option>
+                <option value="50">Age 50</option><option value="51">Age 51</option><option value="52">Age 52</option><option value="53">Age 53</option><option value="54">Age 54</option>
+                <option value="55">Age 55</option><option value="56">Age 56</option><option value="57">Age 57</option><option value="58">Age 58</option><option value="59">Age 59</option>
+                <option value="60">Age 60</option><option value="61">Age 61</option><option value="62">Age 62</option><option value="63">Age 63</option><option value="64">Age 64</option>
+                <option value="65">Age 65</option>
+              </select>
+            </div>
+          </td>
+          <td style="padding: 6px 4px;">
+            <div class="input-wrapper select-arrow">
+              <select id="varHoursAmt2">
+                <option value="44">44 Hours</option> <option value="45">45 Hours</option> 
+        <option value="46">46 Hours</option> <option value="47">47 Hours</option> 
+        <option value="48">48 Hours</option> <option value="49">49 Hours</option> 
+        <option value="50">50 Hours</option> <option value="51">51 Hours</option> 
+        <option value="52">52 Hours</option> <option value="53">53 Hours</option> 
+        <option value="54">54 Hours</option> <option value="55">55 Hours</option> 
+        <option value="56">56 Hours</option> <option value="57">57 Hours</option> 
+        <option value="58">58 Hours</option> <option value="59">59 Hours</option>  
+        <option value="60">60 Hours</option> <option value="61">61 Hours</option> 
+        <option value="62">62 Hours</option><option value="63">63 Hours</option> 
+        <option value="64">64 Hours</option> <option value="65">65 Hours</option> 
+        <option value="66">66 Hours</option> <option value="67">67 Hours</option> 
+        <option value="68">68 Hours</option> <option value="69">69 Hours</option> 
+        <option value="70">70 Hours</option> <option value="71">71 Hours</option> 
+        <option value="72" selected>72 Hours</option> 
+        <option value="73">73 Hours</option> <option value="74">74 Hours</option> 
+        <option value="75">75 Hours</option> <option value="76">76 Hours</option> 
+        <option value="77">77 Hours</option> <option value="78">78 Hours</option> 
+        <option value="79">79 Hours</option> <option value="80">80 Hours</option> 
+        <option value="81">81 Hours</option> <option value="82">82 Hours</option> 
+        <option value="83">83 Hours</option> <option value="84">84 Hours</option> 
+        <option value="85">85 Hours</option> <option value="86">86 Hours</option> 
+        <option value="87">87 Hours</option> <option value="88">88 Hours</option> 
+        <option value="89">89 Hours</option> <option value="90">90 Hours</option> 
+        <option value="95">95 Hours</option> <option value="100">100 Hours</option> 
+              </select>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 3 -->
+        <tr>
+          <td style="padding: 6px 4px;">
+            <div class="input-wrapper select-arrow">
+              <select id="varHoursAge3">
+                <option value="" selected>-- Select Age --</option>
+                <option value="50">Age 50</option><option value="51">Age 51</option><option value="52">Age 52</option><option value="53">Age 53</option><option value="54">Age 54</option>
+                <option value="55">Age 55</option><option value="56">Age 56</option><option value="57">Age 57</option><option value="58">Age 58</option><option value="59">Age 59</option>
+                <option value="60">Age 60</option><option value="61">Age 61</option><option value="62">Age 62</option><option value="63">Age 63</option><option value="64">Age 64</option>
+                <option value="65">Age 65</option>
+              </select>
+            </div>
+          </td>
+          <td style="padding: 6px 4px;">
+            <div class="input-wrapper select-arrow">
+              <select id="varHoursAmt3">
+                <option value="44">44 Hours</option> <option value="45">45 Hours</option> 
+        <option value="46">46 Hours</option> <option value="47">47 Hours</option> 
+        <option value="48">48 Hours</option> <option value="49">49 Hours</option> 
+        <option value="50">50 Hours</option> <option value="51">51 Hours</option> 
+        <option value="52">52 Hours</option> <option value="53">53 Hours</option> 
+        <option value="54">54 Hours</option> <option value="55">55 Hours</option> 
+        <option value="56">56 Hours</option> <option value="57">57 Hours</option> 
+        <option value="58">58 Hours</option> <option value="59">59 Hours</option>  
+        <option value="60">60 Hours</option> <option value="61">61 Hours</option> 
+        <option value="62">62 Hours</option><option value="63">63 Hours</option> 
+        <option value="64">64 Hours</option> <option value="65">65 Hours</option> 
+        <option value="66">66 Hours</option> <option value="67">67 Hours</option> 
+        <option value="68">68 Hours</option> <option value="69">69 Hours</option> 
+        <option value="70">70 Hours</option> <option value="71">71 Hours</option> 
+        <option value="72" selected>72 Hours</option> 
+        <option value="73">73 Hours</option> <option value="74">74 Hours</option> 
+        <option value="75">75 Hours</option> <option value="76">76 Hours</option> 
+        <option value="77">77 Hours</option> <option value="78">78 Hours</option> 
+        <option value="79">79 Hours</option> <option value="80">80 Hours</option> 
+        <option value="81">81 Hours</option> <option value="82">82 Hours</option> 
+        <option value="83">83 Hours</option> <option value="84">84 Hours</option> 
+        <option value="85">85 Hours</option> <option value="86">86 Hours</option> 
+        <option value="87">87 Hours</option> <option value="88">88 Hours</option> 
+        <option value="89">89 Hours</option> <option value="90">90 Hours</option> 
+        <option value="95">95 Hours</option> <option value="100">100 Hours</option> 
+              </select>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- END: NEW STEP 1 ADDITION -->
+
+        <!-- === REPLACE YOUR SEAT CHANGES BLOCK ENTIRELY WITH THIS === -->
+        <div class="form-group toggle-group" style="display: flex; justify-content: center; align-items: center; padding: 10px 0; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <span style="font-weight: 600; font-size: 1.0rem; margin-right: 12px; color: #10B981; text-align: center;">Plan to change aircraft? Upgrade?</span>
+            <label class="switch-toggle"> 
+                <input type="checkbox" id="planSeatChangesToggle"> 
+                <span class="slider-round"></span> 
+            </label> 
+        </div>
+
+        <!-- Dynamic Aircraft Upgrades & Conversions Container Wrapper -->
+        <div id="aircraftUpgradeGroup" style="display: none; flex-direction: column; gap: 1.0rem; margin-bottom: 15px; background: rgba(255,255,255,0.03); padding: 14px; border-radius: 6px;">
+            <div style="font-size: 0.85rem; color: #8a8a8f; text-align: center; margin-bottom: 5px;">Specify your future fleet conversions and estimated dates:</div>
+            
+            <!-- SECOND SEAT -->
+                        <!-- === REPLACE YOUR SECOND SEAT BLOCK WITH THIS === -->
+            <div class="form-group">
+                <label>Second Seat</label>
+                <div class="input-wrapper select-arrow">
+                    <select id="secondSeat">
+                        <!-- NEW: Blank Default Option -->
+                        <option value="" selected>-- None selected --</option>
+                        
+                        <optgroup label="Airbus A350"><option value="350A">350 Captain</option><option value="350B">350 First Officer</option></optgroup>
+                        <optgroup label="Airbus A330"><option value="330A">330 Captain</option><option value="330B">330 First Officer</option></optgroup>
+                        <optgroup label="Boeing 767-400"><option value="764A">764 Captain</option><option value="764B">764 First Officer</option></optgroup>
+                        <optgroup label="Boeing 767-300"><option value="763A">7ER Captain</option><option value="763B">7ER First Officer</option></optgroup>
+                        <optgroup label="Airbus A321 NEO"><option value="32NA">32N Captain</option><option value="32NB">32N First Officer</option></optgroup>
+                        <optgroup label="Airbus A321"><option value="321A">321 Captain</option><option value="321B">321 First Officer</option></optgroup>
+                        
+                        <!-- REMOVED: "selected" attribute from 320B -->
+                        <optgroup label="Airbus A320"><option value="320A">320 Captain</option><option value="320B">320 First Officer</option></optgroup>
+                        
+                        <optgroup label="Boeing 737-900"><option value="739A">739 Captain</option><option value="739B">739 First Officer</option></optgroup>
+                        <optgroup label="Boeing 737-800"><option value="738A">738 Captain</option><option value="738B">738 First Officer</option></optgroup>
+                        <optgroup label="Airbus A220-300"><option value="223A">223 Captain</option><option value="223B">223 First Officer</option></optgroup>
+                        <optgroup label="Airbus A220-100"><option value="221A">221 Captain</option><option value="221B">221 First Officer</option></optgroup>
+                        <optgroup label="Boeing 717"><option value="717A">717 Captain</option><option value="717B">717 First Officer</option></optgroup>
+                        <optgroup label="Boeing 777"><option value="777A">777 Captain</option><option value="777B">777 First Officer</option></optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date of Conversion (Estimated)</label>
+                <div class="input-wrapper">
+                    <input type="date" id="conversionDate2">
+                </div>
+            </div>
+
+            
+            <!-- THIRD SEAT -->
+            <div class="form-group">
+                <label>Third Seat</label>
+                <div class="input-wrapper select-arrow">
+                    <select id="thirdSeat">
+                    <option value="" selected>-- None selected --</option>
+                        <optgroup label="Airbus A350"><option value="350A">350 Captain</option><option value="350B">350 First Officer</option></optgroup>
+                        <optgroup label="Airbus A330"><option value="330A">330 Captain</option><option value="330B">330 First Officer</option></optgroup>
+                        <optgroup label="Boeing 767-400"><option value="764A">764 Captain</option><option value="764B">764 First Officer</option></optgroup>
+                        <optgroup label="Boeing 767-300"><option value="763A">7ER Captain</option><option value="763B">7ER First Officer</option></optgroup>
+                        <optgroup label="Airbus A321 NEO"><option value="32NA">32N Captain</option><option value="32NB">32N First Officer</option></optgroup>
+                        <optgroup label="Airbus A321"><option value="321A">321 Captain</option><option value="321B">321 First Officer</option></optgroup>
+                        <optgroup label="Airbus A320"><option value="320A">320 Captain</option><option value="320B" >320 First Officer</option></optgroup>
+                        <optgroup label="Boeing 737-900"><option value="739A">739 Captain</option><option value="739B">739 First Officer</option></optgroup>
+                        <optgroup label="Boeing 737-800"><option value="738A">738 Captain</option><option value="738B">738 First Officer</option></optgroup>
+                        <optgroup label="Airbus A220-300"><option value="223A">223 Captain</option><option value="223B">223 First Officer</option></optgroup>
+                        <optgroup label="Airbus A220-100"><option value="221A">221 Captain</option><option value="221B">221 First Officer</option></optgroup>
+                        <optgroup label="Boeing 717"><option value="717A">717 Captain</option><option value="717B">717 First Officer</option></optgroup>
+                        <optgroup label="Boeing 777"><option value="777A">777 Captain</option><option value="777B">777 First Officer</option></optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date of Conversion 3rd seat (Estimated)</label>
+                <div class="input-wrapper">
+                    <input type="date" id="conversionDate3">
+                </div>
+            </div>
+            
+            <!-- FOURTH SEAT -->
+            <div class="form-group">
+                <label>Fourth Seat</label>
+                <div class="input-wrapper select-arrow">
+                    <select id="fourthSeat">
+                    <option value="" selected>-- None selected --</option>
+                        <optgroup label="Airbus A350"><option value="350A">350 Captain</option><option value="350B">350 First Officer</option></optgroup>
+                        <optgroup label="Airbus A330"><option value="330A">330 Captain</option><option value="330B">330 First Officer</option></optgroup>
+                        <optgroup label="Boeing 767-400"><option value="764A">764 Captain</option><option value="764B">764 First Officer</option></optgroup>
+                        <optgroup label="Boeing 767-300"><option value="763A">7ER Captain</option><option value="763B">7ER First Officer</option></optgroup>
+                        <optgroup label="Airbus A321 NEO"><option value="32NA">32N Captain</option><option value="32NB">32N First Officer</option></optgroup>
+                        <optgroup label="Airbus A321"><option value="321A">321 Captain</option><option value="321B">321 First Officer</option></optgroup>
+                        <optgroup label="Airbus A320"><option value="320A">320 Captain</option><option value="320B" >320 First Officer</option></optgroup>
+                        <optgroup label="Boeing 737-900"><option value="739A">739 Captain</option><option value="739B">739 First Officer</option></optgroup>
+                        <optgroup label="Boeing 737-800"><option value="738A">738 Captain</option><option value="738B">738 First Officer</option></optgroup>
+                        <optgroup label="Airbus A220-300"><option value="223A">223 Captain</option><option value="223B">223 First Officer</option></optgroup>
+                        <optgroup label="Airbus A220-100"><option value="221A">221 Captain</option><option value="221B">221 First Officer</option></optgroup>
+                        <optgroup label="Boeing 717"><option value="717A">717 Captain</option><option value="717B">717 First Officer</option></optgroup>
+                        <optgroup label="Boeing 777"><option value="777A">777 Captain</option><option value="777B">777 First Officer</option></optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date of Conversion 4th seat (Estimated)</label>
+                <div class="input-wrapper">
+                    <input type="date" id="conversionDate4">
+                </div>
+            </div>
+        </div>
+
+
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;border-top: 1px solid rgba(255,255,255,0.05);">
+                    <div>
+                        <div style="color: #F59E0B; font-weight: 600; font-size: 1.0rem;">Apply Hypothetical Pay Raise?</div>
+                        <div style="color: var(--text-muted); font-size: 0.8rem;">Assuming continuous pay raises in future contracts</div>
+                    </div>
+                    <label class="switch-toggle">
+                        <input type="checkbox" id="applyPayRaise">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+                <div id="compoundingRaiseGroup" class="form-group" style="display: none; margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 10px;">
+                        <div class="form-group">
+                            <label>Date of next contract (continuous from this date)</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="contractStartDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Compounding annual raise</label>
+                            <div class="input-wrapper select-arrow">
+                                <select id="compoundingRaisePercent">
+                                    <option value="" disabled selected>Select annual %</option>
+                                    <option value="1">1% Raise</option>
+                                    <option value="2">2% Raise</option>
+                                    <option value="3">3% Raise</option>
+                                    <option value="4">4% Raise</option>
+                                    <option value="5">5% Raise</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="form-btn cancel-btn">Cancel</button>
+                    <button type="submit" class="form-btn submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- B. 401K INVESTMENTS DATA ENTRY FORM WINDOW -->
+<div id="fortyOneKForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>401k Investments</h2>
+    </div>
+    <form class="modal-form">
+                <div class="form-group">
+                    <label>Expected Annual Investment Return (%)<span class="req">Required</span></label>
+                    <div class="input-wrapper select-arrow">
+                        <select id="growthRate401k">
+                            <option value="2">2%</option>
+                            <option value="3">3%</option>
+                            <option value="4" selected>4%</option>
+                            <option value="5">5%</option>
+                            <option value="6">6%</option>
+                            <option value="7">7%</option>
+                            <option value="8">8%</option>
+                            <option value="9">9%</option>
+                            <option value="10">10%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Company Direct Contributions<span class="req">Required</span></label>
+                    <div class="input-wrapper select-arrow">
+                        <select id="companyDirect401k">
+                            <option value="18" selected>18%</option>
+                            <option value="19">19%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Personal Contributions to Traditional</label>
+                    <div class="input-wrapper select-arrow">
+                        <select id="personalTradPercent401k">
+                            <option value="0">0%</option>
+                            <option value="1">1%</option>
+                            <option value="2">2%</option>
+                            <option value="3">3%</option>
+                            <option value="4" selected>4%</option>
+                            <option value="5">5%</option>
+                            <option value="6">6%</option>
+                            <option value="7">7%</option>
+                            <option value="8">8%</option>
+                            <option value="9">9%</option>
+                            <option value="10">10%</option>
+                            <option value="11">11%</option>
+                            <option value="12">12%</option>
+                            <option value="13">13%</option>
+                            <option value="14">14%</option>
+                            <option value="15">15%</option>
+                            <option value="16">16%</option>
+                            <option value="17">17%</option>
+                            <option value="18">18%</option>
+                            <option value="19">19%</option>
+                            <option value="20">20%</option>
+                            <option value="21">21%</option>
+                            <option value="22">22%</option>
+                            <option value="23">23%</option>
+                            <option value="24">24%</option>
+                            <option value="25">25%</option>
+                            <option value="26">26%</option>
+                            <option value="27">27%</option>
+                            <option value="28">28%</option>
+                            <option value="29">29%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Personal Contributions to Roth</label>
+                    <div class="input-wrapper select-arrow">
+                        <select id="personalRothPercent401k">
+                            <option value="0">0%</option>
+                            <option value="1">1%</option>
+                            <option value="2">2%</option>
+                            <option value="3">3%</option>
+                            <option value="4" selected>4%</option>
+                            <option value="5">5%</option>
+                            <option value="6">6%</option>
+                            <option value="7">7%</option>
+                            <option value="8">8%</option>
+                            <option value="9">9%</option>
+                            <option value="10">10%</option>
+                            <option value="11">11%</option>
+                            <option value="12">12%</option>
+                            <option value="13">13%</option>
+                            <option value="14">14%</option>
+                            <option value="15">15%</option>
+                            <option value="16">16%</option>
+                            <option value="17">17%</option>
+                            <option value="18">18%</option>
+                            <option value="19">19%</option>
+                            <option value="20">20%</option>
+                            <option value="21">21%</option>
+                            <option value="22">22%</option>
+                            <option value="23">23%</option>
+                            <option value="24">24%</option>
+                            <option value="25">25%</option>
+                            <option value="26">26%</option>
+                            <option value="27">27%</option>
+                            <option value="28">28%</option>
+                            <option value="29">29%</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+    <div style="font-weight: 600; font-size: 0.95rem; color: #F59E0B; line-height: 1.4;">
+        Enter your current balance divided into two categorties: Traditional and Roth. 
+        <!-- Clicking this link opens the popup window -->
+        <span class="nested-info-link" onclick="document.getElementById('netBenefitsPopup').style.display='flex'">Learn how</span>
+    </div>
+</div>
+
+<!-- THE POPUP WINDOW CONTAINER (FIXED: Added stopPropagation) -->
+<div id="netBenefitsPopup" class="nested-modal-overlay" onclick="if(event.target === this) { this.style.display='none'; event.stopPropagation(); }">
+    <div class="nested-modal-box" onclick="event.stopPropagation();">
+        <p style="color: #fff; font-size: 1rem; margin: 0; font-weight: 500;">Log into your NetBenefits app. In the Home tab, tap on the "Delta 401(k) retirement plan for pilots" tile. Scroll down to "Sources" tile and tap "View Details." All "Company Contributions" and "401(k) Pre-Tax" are traditional.</p>
+        <!-- FIXED: event.stopPropagation() prevents the click from bleeding into the parent modal handler -->
+        <button type="button" class="nested-modal-close-btn" onclick="document.getElementById('netBenefitsPopup').style.display='none'; event.stopPropagation();">Close</button>
+    </div>
+</div>
+
+                
+                <div class="form-group">
+                    <label>Current 401k Traditional Balance<span class="req">Required</span></label>
+                    <div class="input-wrapper">
+                        <input type="number" id="currentTradBalance401k" value="0" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Current 401k Roth Balance<span class="req">Required</span></label>
+                    <div class="input-wrapper">
+                        <input type="number" id="currentRothBalance401k" value="0" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+                           <!-- === REPLACE YOUR ENTIRE 401K PROFIT SHARING BLOCK WITH THIS === -->
+            <div>
+                <div style="font-weight: 600; font-size: 1.0rem; color: #10B981; margin-bottom: 1px; padding-bottom: 0;">Profit Sharing Contributions to 401k</div>
+                <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 1px; margin-bottom: 12px; padding-top:0;">Contributions made every Feb 14th</div>
+            </div>
+
+            <!-- Strategy Selector Menu Dropdown Control Element -->
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="profitSharingContributionStyle">Profit Sharing Allocation Strategy</label>
+                <div class="input-wrapper select-arrow">
+                    <select id="profitSharingContributionStyle">
+                        <option value="amount" selected>Contribute a Fixed Dollar Amount ($)</option>
+                        <option value="percentage">Contribute a Percentage of Income (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- CONTAINER A: Fixed Dollar Amount Fields Stack -->
+            <div id="psDollarInputsGroup" style="display: flex; flex-direction: column; gap: 1.0rem;">
+            <div style="font-weight: 600; font-size: 1.0rem; color: var(--text-muted); margin-bottom: 1px; padding-bottom: 0;">First Officer Section</div>
+                <div class="form-group"> 
+                    <label>First Officer Profit Sharing into Traditional</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="foTradProfitSharing" min="0" placeholder="$0.00" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>First Officer Profit Sharing into Roth</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="foRothProfitSharing" min="0" placeholder="$0.00" value="0">
+                    </div>
+                </div>
+                <div style="font-weight: 600; font-size: 1.0rem; color: var(--text-muted); margin-bottom: 1px; padding-bottom: 0;">Captain Section</div>
+                <div class="form-group">
+                    <label>Captain Profit Sharing into Traditional</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="captTradProfitSharing" min="0" placeholder="$0.00" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Captain Profit Sharing into Roth</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="captRothProfitSharing" min="0" placeholder="$0.00" value="0">
+                    </div>
+                </div>
+            </div>
+                        <!-- CONTAINER B: Dynamic Income Percentage Fields Stack (Hidden by Default) -->
+            <div id="psPercentInputsGroup" style="display: none; flex-direction: column; gap: 1.0rem;">
+            <div style="font-weight: 600; font-size: 1.0rem; color: var(--text-muted); margin-bottom: 1px; padding-bottom: 0;">First Officer Section</div>
+                <div class="form-group"> 
+                    <label>First Officer Profit Sharing % into Traditional</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="foTradProfitSharingPct" min="0" max="100" step="0.1" placeholder="0.0%" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>First Officer Profit Sharing % into Roth</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="foRothProfitSharingPct" min="0" max="100" step="0.1" placeholder="0.0%" value="0">
+                    </div>
+                </div>
+                <div style="font-weight: 600; font-size: 1.0rem; color: var(--text-muted); margin-bottom: 1px; padding-bottom: 0;">Captain Section</div>
+                <div class="form-group">
+                    <label>Captain Profit Sharing % into Traditional</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="captTradProfitSharingPct" min="0" max="100" step="0.1" placeholder="0.0%" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Captain Profit Sharing % into Roth</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="captRothProfitSharingPct" min="0" max="100" step="0.1" placeholder="0.0%" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Captain Profit Sharing % into Roth</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="captRothProfitSharingPct" min="0" max="100" step="0.1" placeholder="0.0%" value="0">
+                    </div>
+                </div>
+            </div>
+
+
+            
+            <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+                <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 1px; color: #fff;">Why is Profit Sharing divided between Capt and FO?</div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">The reason you have the option to contriubte some or none as a FO and also the option to give a different amount as a Captain is because some FOs feel they are too poor to contribute... but when they upgrade and make the big bucks, their plans change.</div>
+                        </div>
+            </div>
+
+
+            
+            <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+                <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 1px; color: #fff;">Why is Profit Sharing divided between Capt and FO?</div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">The reason you have the option to contriubte some or none as a FO and also the option to give a different amount as a Captain is because some FOs feel they are too poor to contribute... but when they upgrade and make the big bucks, their plans change.</div>
+                        </div>
+            </div>
+            
+            <!-- 401(a) Contribution Configuration Grid -->
+                        <!-- 401(a) Contribution Configuration Grid -->
+            <div style="font-weight: 600; font-size: 1.0rem; color: #3B82F6; margin-bottom: 5px;">401(a): Backdoor Roth</div>
+            
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>401(a) First Month</label>
+                    <div class="input-wrapper select-arrow">
+                        <select id="month401aFirst">
+                            <option value="" selected>— None —</option>
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Amount ($)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="amount401aFirst" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; margin-top: 10px;">
+                <div class="form-group">
+                    <label>401(a) Second Month</label>
+                    <div class="input-wrapper select-arrow">
+                        <select id="month401aSecond">
+                            <option value="" selected>— None —</option>
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Amount ($)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="amount401aSecond" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+            </div>
+            <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+                <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 1px; color: #fff;">Why the first & second month format for 401(a)?</div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">Executing a back-door roth transfer is done over the phone with Fidelity. Additionally if regular monthly deposits are made but the back-door transfer is executed less frequently, the interest earned is taxable income. Because of this inconvenience, most pilots opt to do the deposit and transfer simultaneously once or twice a year in large sums. This format allows you to determine which month you plan to make that call to Fidelity.</div>
+                        </div>
+            </div>
+                    <div style="font-weight: 600; font-size: 1.0rem; color: #F59E0B; margin-bottom: 5px;">MBCBP</div>
+
+            <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                    <div style="font-weight: 600; font-size: 0.95rem;">Enrolled in MBCBP?</div>
+                    <label class="switch-toggle">
+                        <input type="checkbox" id="enrolledMBCBP">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+                <div id="mbcbpInputsGroup" style="display: none; flex-direction: column; gap: 1.0rem;">
+                    <div class="form-group">
+                        <label>Current MBCBP Balance ($)<span class="req">Required</span></label>
+                        <div class="input-wrapper">
+                            <input type="number" id="currentMBCBPBalance" min="0" placeholder="$0.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>MBCBP Rate of Return (%)<span class="req">Required</span></label>
+                        <div class="input-wrapper select-arrow">
+                            <select id="growthRateMBCBP">
+                                <option value="3">3%</option>
+                            <option value="4" selected>4%</option>
+                            <option value="5">5%</option>
+                            <option value="6">6%</option>
+                            <option value="7">7%</option>
+                            <option value="8">8%</option>
+                            <option value="9">9%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--"new year update"-->
+            <!-- IRS Limits Tracking Panel Info Cards -->
+            <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+                <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 1px; color: #fff;">2026 IRS 401k Contribution Limits</div>
+                <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1px;">Contributions are automatically throttled in the monthly table</div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <div style="font-weight: 800; font-size: 0.9rem; color:  #fff; margin-bottom: 8px;">Individual Limits</div>
+                        <div style="font-weight: 600; font-size: 0.9rem; color: #8a8a8f; margin-bottom: 8px;">Up through Age 49: $24,500</div>
+                            <div style="font-weight: 600; font-size: 0.9rem; color: #8a8a8f; margin-bottom: 8px;">Age 50+: $32,500</div>
+                            <div style="font-weight: 600; font-size: 0.9rem; color: #8a8a8f; margin-bottom: 8px;">Age 60-63: $35,750</div>
+                    <div style="font-weight: 800; font-size: 0.9rem; color:  #fff;">Combined Limit</div>
+                    <div style="font-weight: 600; font-size: 0.9rem; color: #8a8a8f;">Company + Personal: $72,000</div>
+                </div>
+            </div>
+            
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                <div style="font-weight: 600; font-size: 0.95rem;">Assume IRS will increase contribution limits?</div>
+                <label class="switch-toggle">
+                    <input type="checkbox" id="applyIrsInflationToggle">
+                    <span class="slider-round"></span>
+                </label>
+                </div>
+
+                <div id="irsInflationDropdownGroup" style="display: none; flex-direction: column; gap: 1.0rem;">
+                <div class="form-group">
+                    <label>Estimated Annual Increase to Contribution Limits<span class="req">Required</span></label>
+                    <div class="input-wrapper select-arrow">
+                    <select id="estimatedIrsIncreaseRate">
+                        <option value="0.5">0.5%</option>
+                        <option value="1.5">1.5%</option>
+                        <option value="2" selected>2%</option>
+                        <option value="2.5">2.5%</option>
+                        <option value="3">3%</option>
+                        <option value="3.5">3.5%</option>
+                    </select>
+                    </div>
+                </div>
+                </div>
+                    <div class="irs-limits-panel" style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+                    <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; color: #fff; text-align: center;">Historical IRS Adjustments (Past 40 Years)</div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px; text-align: center;">Long-term average annual compound growth markers</div>
+                    
+                    <table style="width: 100%; border-collapse: collapse; color: #fff; font-size: 0.9rem;">
+                        <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-weight: 700;">
+                            <th style="padding: 10px 8px; text-align: left; width: 45%;">Measure</th>
+                            <th style="padding: 10px 8px; text-align: right; width: 55%;">Approximate Increase</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 12px 8px; font-weight: 600; color: #fff;">Inflation</td>
+                            <td style="padding: 12px 8px; text-align: right; color: #8a8a8f; font-weight: 500;">~2.7–3.0% per year</td>
+                        </tr>
+                        <!--<tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 12px 8px; font-weight: 600; color: #fff;">Elective deferral limit</td>
+                            <td style="padding: 12px 8px; text-align: right; color: #8a8a8f; font-weight: 500;">~3.2–3.5% per year</td>
+                        </tr>-->
+                        <tr>
+                            <td style="padding: 12px 8px; font-weight: 600; color: #fff; vertical-align: top;">Combined Annual Limit</td>
+                            <td style="padding: 12px 8px; text-align: right; color: #8a8a8f; font-weight: 500; line-height: 1.4;">
+                            ~2.2–2.5% per year <span style="font-size: 0.8rem; display: block; color: var(--text-muted); margin-top: 2px;"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+
+
+            <!-- FIXED: Added block layout rules and heavy custom padding so buttons look massive and matches theme style -->
+            <div class="form-actions" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: flex-end; gap: 12px; width: 100%;">
+                <button type="button" class="cancel-btn" style="padding: 12px 24px; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.95rem;">Cancel</button>
+                <button type="submit" class="submit-btn" style="padding: 12px 28px; background: #ff2d55; border: none; color: #fff; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(255,45,85,0.3);">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+<!-- C. HSA DATA ENTRY FORM WINDOW -->
+<div id="hsaForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>HSA Account Info</h2>
+    </div>
+    <form class="modal-form">
+
+        <!-- Rate of Return -->
+        <div class="form-group">
+            <label>Rate of Return<span class="req">Required</span></label>
+            <div class="input-wrapper select-arrow">
+                <select id="growthRateHsa">
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Coverage Selection Tier -->
+        <div class="form-group">
+            <label>HSA Coverage Plan Tier <span class="req">Required</span></label>
+            <div class="input-wrapper select-arrow">
+                <select id="hsaCoverageTier" required>
+                    <option value="self" selected>Self-Only Coverage ($4,400 Limit)</option>
+                    <option value="family">Family Coverage ($8,750 Limit)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Current Balance -->
+        <div class="form-group">
+            <label>Current HSA Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="currentBalanceHsa" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+        <!-- Annual Medical Expenses Section -->
+        <div style="font-weight: 700; font-size: 1.0rem; color: #10B981; margin-top: 15px; margin-bottom: 5px;">
+            Expected annual spending for medical expenses starting this year through retirement
+        </div>
+        <div class="form-group">
+            <label>Annual Medical Expenses</label>
+            <div class="input-wrapper">
+                <input type="number" id="annualMedicalExpensesHsa" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+        <!-- Inflows Setup Block -->
+        <div style="font-weight: 700; font-size: 1.0rem; color: #F59E0B; margin-top: 15px; margin-bottom: 5px;">
+            Contributions Setup
+        </div>
+
+        <!-- Contribution Strategy Selector Dropdown Menu -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="hsaContributionStyle">HSA Contribution Strategy</label>
+            <div class="input-wrapper select-arrow">
+                <select id="hsaContributionStyle">
+                    <option value="profitsharing" selected>Annual Contribution via Profit Sharing (Feb 14th)</option>
+                    <option value="monthly">Regular Monthly Payroll Contributions</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ERROR ALERT DISPLAY MODULE (Hidden by Default) -->
+        <div id="hsaLimitErrorAlert" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; color: #FCA5A5; font-size: 0.85rem; padding: 10px 12px; border-radius: 6px; margin-bottom: 15px; font-weight: 500; align-items: center; gap: 8px;">
+            ⚠️ <span id="hsaErrorAlertText">Your entered contributions exceed the maximum IRS legal annual limit.</span>
+        </div>
+
+                <!-- CONTAINER A: Profit Sharing Input Field Stack (Split by Age Group Milestones) -->
+        <div id="hsaProfitSharingInputsGroup" style="display: flex; flex-direction: column; gap: 1.0rem;">
+            
+            <!-- Profit Sharing Under 55 Block -->
+            <div>
+                <div class="form-group">
+                    <label>Profit Sharing Contribution Through Age 54</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="profitSharContribHsa" class="hsa-calc-input" value="0" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 5px;">
+                    <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Contribute the Maximum? (easy button)</span>
+                    <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                        <input type="checkbox" id="maxHsaPsToggle">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Profit Sharing Over 55 Block -->
+            <div>
+                <div class="form-group">
+                    <label>Profit Sharing Contribution Catch-up Age 55+</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="profitSharContribHsaOver55" class="hsa-calc-input" value="0" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 5px;">
+                    <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Contribute the Maximum? (easy button)</span>
+                    <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                        <input type="checkbox" id="maxHsaPsOver55Toggle">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTAINER B: Regular Monthly Input Field Stack (Hidden by Default) -->
+        <div id="hsaMonthlyInputsGroup" style="display: none; flex-direction: column; gap: 1.0rem;">
+            
+            <!-- Monthly Under 55 Block -->
+            <div>
+                <div class="form-group">
+                    <label>Regular Monthly Contributions Through Age 54 </label>
+                    <div class="input-wrapper">
+                        <input type="number" id="monthlyContribHsa" class="hsa-calc-input" value="0" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 5px;">
+                    <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Contribute the Maximum? (easy button)</span>
+                    <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                        <input type="checkbox" id="maxHsaMoToggle">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Monthly Over 55 Block -->
+            <div>
+                <div class="form-group">
+                    <label>Regular Monthly Contributions Catch-up Age 55+</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="monthlyContribHsaOver55" class="hsa-calc-input" value="0" min="0" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 5px;">
+                    <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Contribute the Maximum? (easy button)</span>
+                    <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                        <input type="checkbox" id="maxHsaMoOver55Toggle">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+<!-- 2026 HSA Limits Info Block -->
+
+        <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px;">
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; text-align: center;">2026 HSA Contribution Limits</div>
+            
+            <!-- Base Contribution Header -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">
+                <div>Self-Only Coverage</div>
+                <div>Family Coverage</div>
+            </div>
+            
+            <!-- Row 1: Under Age 55 Base Limits -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-weight: 700; font-size: 1.15rem; margin-top: 4px;">
+                <div style="color: #10B981;">$4,400</div>
+                <div style="color: #10B981;">$8,750</div>
+            </div>
+            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; margin-bottom: 8px; font-weight: 500; letter-spacing: 0.3px;">
+                Standard Base Limit (Under Age 55)
+            </div>
+
+            <!-- Row 2: Age 55+ Catch-Up Limits -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-weight: 700; font-size: 1.15rem; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 6px;">
+                <div style="color: #10B981;">$5,400</div>
+                <div style="color: #10B981;">$9,750</div>
+            </div>
+            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; font-weight: 500; letter-spacing: 0.3px;">
+                Catch-Up Limit (Age 55 or Older)*
+            </div>
+
+            <!-- HDHP Threshold Requirements Section -->
+            <div style="font-weight: 700; font-size: 0.85rem; margin-top: 12px; margin-bottom: 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+                2026 Required Plan Thresholds (HDHP)
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+                    <span style="font-weight: 500;">Minimum Plan Deductible</span>
+                    <span style="font-weight: 700;">$1,700 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Self</span> / $3,400 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Fam</span></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+                    <span style="font-weight: 500;">Max Out-of-Pocket Cap</span>
+                    <span style="font-weight: 700;">$8,500 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Self</span> / $17,000 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Fam</span></span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; line-height: 1.2;">
+                *Note: Account holders age 55 or older can contribute an extra $1,000 catch-up. No income ceilings apply to HSAs, but you cannot be enrolled in Medicare or claimed as a dependent.
+            </div>
+        </div>
+
+        <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 1px; color: #fff;">The calculator assumes your monthly or Profit Sharing contributions will continue without fail until retirement age </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">If you plan to stop contributing to your HSA at a future date to reallocate your contributions elsewhere, use the next two fields to define the stop dates</div>
+            </div>
+        </div>
+
+        <!-- Hard Stop Timeline Cutoffs -->
+        <div class="form-group">
+            <label>Future Date You Stop Monthly Contributions</label>
+            <div class="input-wrapper">
+                <input type="date" id="stopMonthlyDateHsa">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Future Date You Stop Annual Profit Sharing Contributions</label>
+            <div class="input-wrapper">
+                <input type="date" id="stopAnnualDateHsa">
+            </div>
+        </div>
+
+
+        <div class="form-actions">
+            <button type="button" class="form-btn cancel-btn">Cancel</button>
+            <button type="button" class="form-btn submit-btn" onclick="saveNewAccountData();">Submit</button>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- D. DYNAMIC IRA ACCOUNT DATA ENTRY WINDOW -->
+<div id="iraForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>IRA Account Info</h2>
+    </div>
+    <form class="modal-form">
+        
+        <!-- --- ROTH IRA SUB-SECTION --- -->
+        <div style="font-weight: 600; font-size: 1.0rem; color: #10B981; margin-bottom: 5px;">Roth IRA</div>
+
+        <div class="form-group"> 
+            <label>Roth IRA Rate of Return</label> 
+            <div class="input-wrapper select-arrow"> 
+                <select id="iraGrowthRate"> 
+                <option value="0">--</option>
+                <option value="3">3%</option> 
+                <option value="4" selected>4%</option> 
+                <option value="5">5%</option> 
+                <option value="6">6%</option> 
+                <option value="7">7%</option> 
+                <option value="8">8%</option> 
+                <option value="9">9%</option> 
+                </select> 
+            </div> 
+            </div>
+
+        <div class="form-group">
+            <label>Your Current Roth IRA Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="currentRothIra" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        
+        <!-- Integrated Age-Based Back-Door Contribution Fields -->
+        <div class="form-group">
+            <label>Annual Roth Back-door Contributions thru Age 49</label>
+            <div class="input-wrapper">
+                <input type="number" id="iraAnnualUnder50" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Annual Back-door Contributions Age 50+</label>
+            <div class="input-wrapper">
+                <input type="number" id="iraAnnualOver50" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+                <!-- --- TRADITIONAL IRA SUB-SECTION --- -->
+        <div style="font-weight: 600; font-size: 1.0rem; color: #3B82F6; margin-top: 15px; margin-bottom: 5px;">Traditional IRA</div>
+
+        <!-- NEW: Dedicated Rate of Return Selector for Traditional IRA -->
+        <div class="form-group">
+            <label>Traditional IRA Rate of Return</label>
+            <div class="input-wrapper select-arrow">
+                <select id="tradIraGrowthRate">
+                    <option value="0">--</option>
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Your Current Traditional IRA Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="currentTradIra" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+                <!--"new year update"-->
+        <!-- 2026 IRA Limits Info Block -->
+<div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px;">
+    <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; text-align: center;">2026 IRA Contribution Limits</div>
+    
+    <!-- Base Contribution Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">
+        <div>Under Age 50</div>
+        <div>Age 50+</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-weight: 700; font-size: 1.15rem; margin-top: 4px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+        <div style="color: #10B981;">$7,500</div>
+        <div style="color: #10B981;">$8,600</div>
+    </div>
+
+    <!-- Income Eligibility Ceilings Section -->
+    <div style="font-weight: 700; font-size: 0.85rem; margin-top: 12px; margin-bottom: 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+        2026 Roth Direct Contribution Ceilings
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+        <!-- Married Filing Jointly -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+            <span style="font-weight: 500;">Married Filing Jointly</span>
+            <span style="font-weight: 700;">&lt; $242,000 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">MAGI</span></span>
+        </div>
+        <!-- Single / Head of Household -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+            <span style="font-weight: 500;">Single / Head of Household</span>
+            <span style="font-weight: 700;">&lt; $153,000 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">MAGI</span></span>
+        </div>
+    </div>
+
+    <!-- Phase-Out Footnote -->
+    <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; line-height: 1.2;">
+        *Note: Partial contributions phase out completely at $252,000 (MFJ) and $168,000 (Single). Traditional IRAs have no income cap for non-deductible contributions.
+    </div>
+</div>
+
+
+        <!-- Unified Form Actions -->
+        <div class="form-actions" style="margin-top: 20px;">
+            <button type="button" class="form-btn cancel-btn">Cancel</button>
+            <button type="submit" class="form-btn submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
+              
+                <!-- E. BROKERAGE ACCOUNT DATA ENTRY FORM WINDOW -->
+<div id="brokerageForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>Brokerage Account</h2>
+    </div>
+    <form class="modal-form">
+        
+        <!-- Rate of Return Selector -->
+        <div class="form-group">
+            <label>Rate of Return</label>
+            <div class="input-wrapper select-arrow">
+                <select id="growthRateBrokerage">
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Current Balance Input -->
+        <div class="form-group">
+            <label>Current Brokerage Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="currentBalanceBrokerage" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+        <!-- Monthly Contribution Input -->
+        <div class="form-group">
+            <label>Regular Monthly Contribution</label>
+            <div class="input-wrapper">
+                <input type="number" id="monthlyContribBrokerage" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        <!-- Information Panel -->
+        <div class="tax-brackets-panel" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; color: #fff; ">Not a "Retirement Account"</div>
+            <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">For the purposes of this calculator, the balance of this brokerage account is not factored into combined account totals, traditional totals or roth totals. However you will find that the compounding balance is shown below in a dedicated column within the monthly table. </div>
+        </div>
+        <!-- Unified Form Actions -->
+        <div class="form-actions">
+            <button type="button" class="form-btn cancel-btn">Cancel</button>
+            <button type="submit" class="form-btn submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+         
+                <!-- F. SPOUSE ACCOUNTS DATA ENTRY FORM WINDOW -->
+<div id="spouseAccountsForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>Spouse Accounts Info</h2>
+    </div>
+    <form class="modal-form">
+        <div class="form-group"> 
+            <label>Spouse Birth Date <span class="req">Required</span></label> 
+            <div class="input-wrapper"> 
+                <input type="date" id="spouseBirthDate" value="1979-01-01" required> 
+            </div> 
+        </div> 
+        <!-- ==========================================
+             1. SPOUSE ROTH IRA SUB-SECTION 
+             ========================================== -->
+                <!-- === REPLACE YOUR SPOUSE ROTH IRA VIEW SEGMENT WITH THIS === -->
+        <div style="font-weight: 600; font-size: 1.0rem; color: #10B981; margin-bottom: 5px;">Roth IRA</div>
+        
+        <!-- NEW: Spouse Roth IRA Over-Contribution Warning Feedback Card (Hidden by Default) -->
+        <div id="spouseIraLimitErrorAlert" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; color: #FCA5A5; font-size: 0.85rem; padding: 10px 12px; border-radius: 6px; margin-bottom: 15px; font-weight: 500; align-items: center; gap: 8px; line-height: 1.4;">
+            ⚠️ <span id="spouseIraErrorAlertText">Your entered annual contribution exceeds the maximum statutory IRS ceiling limit.</span>
+        </div>
+
+        <div class="form-group">
+            <label>Spouse's Roth IRA Rate of Return</label>
+            <div class="input-wrapper select-arrow">
+                <select id="spouseIraGrowthRate">
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Spouse's Current Roth IRA Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="spouseCurrentRothIra" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+        <!-- Split Input Field 1: Under Age 50 with Maximum Toggle Underneath -->
+        <div style="margin-bottom: 1.0rem;">
+            <div class="form-group">
+                <label>Spouse's Annual Back-door Contributions thru Age 49</label>
+                <div class="input-wrapper">
+                    <input type="number" id="spouseIraAnnualUnder50" class="spouse-ira-calc-input" value="0" min="0" placeholder="$0.00">
+                </div>
+            </div>
+            <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 5px;">
+                <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Contribute the Maximum? (easy button)</span>
+                <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                    <input type="checkbox" id="maxSpouseIraUnder50Toggle">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Split Input Field 2: Age 50+ Catch-up with Maximum Toggle Underneath -->
+        <div style="margin-bottom: 1.0rem;">
+            <div class="form-group">
+                <label>Spouse's Annual Back-door Contributions Age 50+</label>
+                <div class="input-wrapper">
+                    <input type="number" id="spouseIraAnnualOver50" class="spouse-ira-calc-input" value="0" min="0" placeholder="$0.00">
+                </div>
+            </div>
+            <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 5px;">
+                <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Contribute the Maximum? (easy button)</span>
+                <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                    <input type="checkbox" id="maxSpouseIraOver50Toggle">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+        </div>
+
+                        <!--"new year update"-->
+<!-- 2026 IRA Limits Info Block -->
+<div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px;">
+    <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; text-align: center;">2026 IRA Contribution Limits</div>
+    
+    <!-- Base Contribution Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">
+        <div>Under Age 50</div>
+        <div>Age 50+</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-weight: 700; font-size: 1.15rem; margin-top: 4px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+        <div style="color: #10B981;">$7,500</div>
+        <div style="color: #10B981;">$8,600</div>
+    </div>
+
+    <!-- Income Eligibility Ceilings Section -->
+    <div style="font-weight: 700; font-size: 0.85rem; margin-top: 12px; margin-bottom: 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+        2026 Roth Direct Contribution Ceilings
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+        <!-- Married Filing Jointly -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+            <span style="font-weight: 500;">Married Filing Jointly</span>
+            <span style="font-weight: 700;">&lt; $242,000 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">MAGI</span></span>
+        </div>
+        <!-- Single / Head of Household -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+            <span style="font-weight: 500;">Single / Head of Household</span>
+            <span style="font-weight: 700;">&lt; $153,000 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">MAGI</span></span>
+        </div>
+    </div>
+    <!-- Phase-Out Footnote -->
+    <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; line-height: 1.2;">
+        *Note: Partial contributions phase out completely at $252,000 (MFJ) and $168,000 (Single). Traditional IRAs have no income cap for non-deductible contributions.
+    </div>
+</div>
+        <!-- ==========================================
+             2. SPOUSE TRADITIONAL IRA SUB-SECTION 
+             ========================================== -->
+        <div style="font-weight: 600; font-size: 1.0rem; color: #3B82F6; margin-top: 15px; margin-bottom: 5px;">Traditional IRA</div>
+        <div class="form-group">
+            <label>Spouse's Traditional IRA Rate of Return</label>
+            <div class="input-wrapper select-arrow">
+                <select id="spouseTradIraGrowthRate">
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Spouse's Current Traditional IRA Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="spouseCurrentTradIra" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+
+    
+        <!-- ==========================================
+             3. SPOUSE HSA SUB-SECTION 
+             ========================================== -->
+        <div style="font-weight: 600; font-size: 1.0rem; color: #F59E0B; margin-top: 15px; margin-bottom: 5px;">Health Savings Account (HSA)</div>
+        
+        <!-- Spouse Coverage Selection Plan Tier Dropdown Menu Selector -->
+        <div class="form-group">
+            <label>Spouse's HSA Coverage Plan Tier <span class="req" style="color: #ff4d4d;">Required</span></label>
+            <div class="input-wrapper select-arrow">
+                <select id="spouseHsaCoverageTier" required>
+                    <option value="self" selected>Self-Only Coverage ($4,400 Limit)</option>
+                    <option value="family">Family Coverage ($8,750 Limit)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Spouse HSA Over-Contribution Warning Feedback Box Panel Card (Hidden by Default) -->
+        <div id="spouseHsaLimitErrorAlert" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; color: #FCA5A5; font-size: 0.85rem; padding: 10px 12px; border-radius: 6px; margin-bottom: 15px; font-weight: 500; align-items: center; gap: 8px; line-height: 1.4;">
+            ⚠️ <span id="spouseHsaErrorAlertText">Your entered monthly contribution projects an annual total that exceeds the statutory IRS ceiling limit.</span>
+        </div>
+
+        <div class="form-group">
+            <label>Spouse's HSA Rate of Return</label>
+            <div class="input-wrapper select-arrow">
+                <select id="spouseGrowthRateHsa">
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Spouse's Current HSA Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="spouseCurrentBalanceHsa" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+
+        <!-- Split Input Field 1: Under Age 55 with Maximum Toggle underneath -->
+        <div>
+            <div class="form-group">
+                <label>Spouse's Regular Monthly Contribution (Through Age 54)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="spouseMonthlyContribHsa" class="spouse-hsa-calc-input" value="0" min="0" placeholder="$0.00">
+                </div>
+            </div>
+            <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 15px;">
+                <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Maximum? (Monthly Under 55)</span>
+                <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                    <input type="checkbox" id="maxSpouseHsaMoToggle">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Split Input Field 2: Over Age 55 Catch-up with Maximum Toggle underneath -->
+        <div>
+            <div class="form-group">
+                <label>Spouse's Regular Monthly Contribution Catch-up (Age 55+)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="spouseMonthlyContribHsaOver55" class="spouse-hsa-calc-input" value="0" min="0" placeholder="$0.00">
+                </div>
+            </div>
+            <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 15px;">
+                <span style="font-size: 0.85rem; color: #fff; font-weight: 600;">Maximum? (Monthly Age 55+ Catch-up)</span>
+                <label class="switch-toggle" style="transform: scale(0.85); transform-origin: right;">
+                    <input type="checkbox" id="maxSpouseHsaMoOver55Toggle">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+        </div>
+                        <!--"new year update"-->
+        <div class="irs-limits-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px;">
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; text-align: center;">2026 HSA Contribution Limits</div>
+            
+            <!-- Base Contribution Header -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">
+                <div>Self-Only Coverage</div>
+                <div>Family Coverage</div>
+            </div>
+            
+            <!-- Row 1: Under Age 55 Base Limits -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-weight: 700; font-size: 1.15rem; margin-top: 4px;">
+                <div style="color: #F59E0B;">$4,400</div>
+                <div style="color: #F59E0B;">$8,750</div>
+            </div>
+            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; margin-bottom: 8px; font-weight: 500; letter-spacing: 0.3px;">
+                Standard Base Limit (Under Age 55)
+            </div>
+
+            <!-- Row 2: Age 55+ Catch-Up Limits -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: center; font-weight: 700; font-size: 1.15rem; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 6px;">
+                <div style="color: #F59E0B;">$5,400</div>
+                <div style="color: #F59E0B;">$9,750</div>
+            </div>
+            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; font-weight: 500; letter-spacing: 0.3px;">
+                Catch-Up Limit (Age 55 or Older)*
+            </div>
+
+            <!-- HDHP Threshold Requirements Section -->
+            <div style="font-weight: 700; font-size: 0.85rem; margin-top: 12px; margin-bottom: 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+                2026 Required Plan Thresholds (HDHP)
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+                    <span style="font-weight: 500;">Minimum Plan Deductible</span>
+                    <span style="font-weight: 700;">$1,700 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Self</span> / $3,400 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Fam</span></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px;">
+                    <span style="font-weight: 500;">Max Out-of-Pocket Cap</span>
+                    <span style="font-weight: 700;">$8,500 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Self</span> / $17,000 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">Fam</span></span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; line-height: 1.2;">
+                *Note: Account holders age 55 or older can contribute an extra $1,000 catch-up. No income ceilings apply to HSAs, but you cannot be enrolled in Medicare or claimed as a dependent.
+            </div>
+        </div>
+         
+        <!-- Unified Form Actions -->
+        <div class="form-actions" style="margin-top: 20px;">
+            <button type="button" class="form-btn cancel-btn">Cancel</button>
+            <button type="submit" class="form-btn submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+        <!-- G. THRIFT SAVINGS PLAN DATA ENTRY FORM WINDOW -->
+<!-- 3. THRIFT SAVINGS PLAN DATA ENTRY FORM WINDOW -->
+<div id="tspForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>Thrift Savings Plan</h2>
+    </div>
+    <form class="modal-form">
+        
+        <div class="form-group">
+            <label>Rate of Return</label>
+            <div class="input-wrapper select-arrow">
+                <select id="growthRateTsp">
+                    <option value="3">3%</option>
+                    <option value="4" selected>4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Current Traditional Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="currentTradBalanceTsp" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Current Roth Balance</label>
+            <div class="input-wrapper">
+                <input type="number" id="currentRothBalanceTsp" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        <div style="font-weight: 700; font-size: 1.0rem; color: #10B981; margin-top: 15px; margin-bottom: 5px;">Currently contributing? </div>
+        <div class="form-group">
+            <label>Annual Contributions to Traditional</label>
+            <div class="input-wrapper">
+                <input type="number" id="annualTradContribTsp" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Annual Contributions to Roth</label>
+            <div class="input-wrapper">
+                <input type="number" id="annualRothContribTsp" value="0" min="0" placeholder="$0.00">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Future Date You Plan to Stop Contributing</label>
+            <div class="input-wrapper">
+                <input type="date" id="stopDateTsp">
+            </div>
+        </div>
+        
+        <!-- Unified Form Actions -->
+        <div class="form-actions">
+            <button type="button" class="form-btn cancel-btn">Cancel</button>
+            <button type="submit" class="form-btn submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
+
+    <!-- Essential Scripts & Application Framework Initializations -->
+    <script src="html2pdf.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

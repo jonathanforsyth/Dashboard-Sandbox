@@ -1,0 +1,17 @@
+{
+  "short_name": "PilotWealth",
+  "name": "Widget Pilot Wealth Forecasting Tool",
+  "icons": [
+    {
+      "src": "images/dollar-sign.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#121212",
+  "theme_color": "#ff2d55",
+  "display": "standalone",
+  "orientation": "portrait"
+}

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<!--When new year limits need updating, search "new year update" to find blocks needing the update-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Wealth Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+
+<body class="app-body">
+
+    <!-- Top Navigation Bar (Visible on Tablet/Desktop viewports) -->
+<header class="top-nav nav-purple">
+        <div class="brand">In-Retirement Calculator for Delta Pilots</div>
+        <nav class="nav-links">
+            <a href="app.html" class="nav-item">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- Y Axis -->
+                    <path d="M5 4v15" />
+                    <!-- X Axis -->
+                    <path d="M5 19h15" />
+                    <!-- Upward Growth Arrow -->
+                    <path d="M8 14l4-5 3 3 4-5" />
+                    <path d="M16 7h3v3" />
+                </svg> 
+                Investment Calculator
+            </a>
+            <a href="javascript:void( window.open( 'https://form.jotform.com/261366475514057', 'blank', 'scrollbars=yes, toolbar=no, width=700, height=500' ) )" class="nav-item">
+  <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" fill="currentColor"/></svg>
+  <span>Give Feedback</span>
+</a>
+
+            
+        </nav>
+    </header>
+
+    <!-- Main Dashboard Engine --> 
+<main class="dashboard-container"> 
+  
+    <!-- TOP COLUMN 1: LEFT SIDE ACTION PANEL --> 
+    <section class="action-panel"> 
+        <button class="menu-btn secondary-btn" data-target="retirementModal">Update In-Retirement Investment/Withdrawal Strategy</button> 
+        <button class="menu-btn secondary-btn" data-target="socialSecurityForm">Update Social Security Profile</button>
+        <button class="menu-btn secondary-btn" data-target="taxProfileModal">Update Tax Profile</button>
+        <button class="menu-btn secondary-btn" data-target="pensionModal">Add a Pension</button>
+        <button class="menu-btn secondary-btn" data-target="supplementalIncomeModal">Add Supplemental Income (VA)</button>
+        <button class="menu-btn" data-target="Modal"  onclick="window.location.href='app.html';">Back to Investment Calculator</button>
+    </section> 
+
+    <!-- TOP COLUMN 2: RIGHT SIDE ACCOUNT BALANCES OVERVIEW CARD -->
+    <section class="hero-banner"> 
+    <div style="background: #1e1e1e; border-left: 4px solid #ffb300; padding: 12px 15px; border-radius: 6px;"> 
+                <div style="font-size: 0.75rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Retirement Age</div> 
+                <div id="tileRetirementAge" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px;">65</div> 
+            </div> 
+            <br>
+            
+           <div style="background: #1e1e1e; border-left: 4px solid #A020F0; padding: 5px 5px; border-radius: 6px;"> 
+            
+        <div class="hero-text"> 
+            <h1>Account Balances at Retirement Age</h1> 
+            <p>All traditional accounts compiled in one IRA & all roth accounts compiled in another IRA</p> 
+        </div> 
+        
+                </div> 
+        
+        <!-- Nested Inner Grid Container to align tiles neatly -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 15px;">
+            <div style="background: #1e1e1e; border-left: 4px solid #A020F0; padding: 12px 15px; border-radius: 6px;"> 
+                <div style="font-size: 0.75rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">All Traditional</div> 
+                <div id="tileGrandTrad" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px;">$5,106,870</div> 
+            </div>
+            <div style="background: #1e1e1e; border-left: 4px solid #A020F0; padding: 12px 15px; border-radius: 6px;"> 
+                <div style="font-size: 0.75rem; color: #8a8a8f; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">All Roth</div> 
+                <div id="tileGrandRoth" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px;">$1,056,652</div> 
+            </div> 
+        </div> 
+    </section> 
+
+    <!-- FULL WIDTH BOTTOM SECTION: THE PROJECTIONS LEDGER -->
+    <section id="grandSummaryDashboardPanel" class="summary-table-section" style="width: 100%; clear: both; margin-top: 25px; padding-top: 20px; border-top: 1px solid #3a3a3c;"> 
+    <div class="summary-table-header-strip"> 
+        <h3>Retirement Projections Ledger</h3> 
+        <p>Year-by-year growth and withdrawals through age 100</p> 
+        
+        <!-- 🌟 Cleaned print action button targeting this specific dashboard panel -->
+        <button onclick="printDashboardSection('grandSummaryDashboardPanel')" class="no-print" style="padding: 8px 16px; background-color: #e6a23c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;">
+            Export Retirement Report to PDF
+        </button>
+    </div> 
+
+    <!-- Enforces matching scrolling wrappers -->
+    <div class="summary-grid-viewport-wrapper" style="width: 100%; overflow-x: auto;"> 
+        <table id="grandRetirementProjectionsLedgerTable" style="width: 100%; border-collapse: collapse;"> 
+            <thead> 
+                <tr> 
+                    <th class="sticky-col-header">Year</th> 
+                    <th>Age</th> 
+                    <th>Traditional IRA Balance</th> 
+                    <th>Roth IRA Balance</th> 
+                    <th>Percentage or Amount Withdrawal</th> 
+                    <th>RMD Amount</th> 
+                    <th>Actual Withdrawal Taken</th> 
+                    <th id="thPension">Pension Income</th> 
+                    <th id="thSocialSecurity">Social Security Benefit</th> 
+                    <th id="thSupplemental1">Supplemental Income 1</th> 
+                    <th id="thSupplemental2">Supplemental Income 2</th> 
+                    <th>Pre-Tax Total Income</th> 
+                    <th>After-Tax Total Income</th> 
+                </tr> 
+            </thead>
+            <tbody id="grandRetirementProjectionsTableBody">
+                <!-- Data will be injected here cleanly by app.js -->
+            </tbody>
+        </table>
+    </div>
+</section>
+</main> 
+
+<!-- Contextual Bottom Navigation Bar (Visible on Mobile viewports only) --> 
+<footer class="bottom-nav"> 
+  <a href="app.html" class="nav-item active"> 
+    <svg viewBox="0 0 24 24" width="20" height="20">
+        <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="currentColor"/>
+    </svg>  
+    <span>Back</span> 
+  </a> 
+  <a href="javascript:void( window.open( 'https://form.jotform.com/261366475514057', 'blank', 'scrollbars=yes, toolbar=no, width=700, height=500' ) )" class="nav-item">
+  <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" fill="currentColor"/></svg>
+  <span>Give Feedback</span>
+</a>
+</footer> 
+
+<!-- Overlay Layer Component for Popups/Modals (Z-Index Backdrop Layout) --> 
+<div id="modalOverlay" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;"> 
+  
+  <!-- FORM 1: RETIREMENT STRATEGY & BALANCES MODAL --> 
+<div id="retirementModal" class="modal-window" style="display: none; background: #262629; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;"> 
+  <div class="modal-header"> 
+    <h2 style="color: #fff; font-size: 1.2rem;">Retirement Strategy & Assets</h2> 
+  </div> 
+  <form id="retirementForm" class="modal-form"> 
+    <!-- NEW: Withdrawal Start Strategy --> 
+    <div style="font-weight: 600; font-size: 1.0rem; color: #10B981; margin-bottom: 5px;">When do you want to start pulling out money? </div> 
+    <div class="form-group"> 
+      <label for="withdrawalStartStrategy">Withdrawal Timing</label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="withdrawalStartStrategy"> 
+          <option value="immediate" selected>Start at Retirement Age/Date</option> 
+          <option value="delayed">Delay Withdrawals until a Specified Date</option> 
+        </select> 
+      </div> 
+    </div> 
+    <!-- NEW: Specified Delay Date (Hidden by default) --> 
+    <div class="form-group" id="delayDateWrapper" style="display: none;"> 
+      <label for="withdrawalStartDate">Specified Withdrawal Start Date</label> 
+      <div class="input-wrapper"> 
+        <input type="date" id="withdrawalStartDate" value="2035-01-01"> 
+      </div> 
+    </div> 
+    <div class="tax-brackets-panel" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;"> 
+      <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; color: #fff; ">Calculator Assumptions:</div> 
+      <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">All traditional accounts compiled in one IRA & all roth accounts compiled in another IRA. Note: Pension, Social Security and Supplemental Income remain separate.</div> 
+    </div> 
+    <div style="font-weight: 600; font-size: 1.0rem; color: #3B82F6; margin-top: 15px; margin-bottom: 5px;">How aggressive are your investment returns now that you're retired?</div> 
+    <div class="form-group"> 
+      <label for="growthRateTraditionalIraRetirement">Expected Traditional Annual Return (%)</label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="growthRateTraditionalIraRetirement"> 
+          <option value="2">2%</option> 
+          <option value="3">3%</option> 
+          <option value="4" selected>4%</option> 
+          <option value="5">5%</option> 
+          <option value="6">6%</option> 
+          <option value="7">7%</option> 
+          <option value="8">8%</option> 
+          <option value="9">9%</option> 
+          <option value="10">10%</option> 
+        </select> 
+      </div> 
+    </div> 
+    <div class="form-group"> 
+      <label for="growthRateRothIraRetirement">Expected Roth Annual Return (%)</label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="growthRateRothIraRetirement"> 
+          <option value="2">2%</option> 
+          <option value="3">3%</option> 
+          <option value="4" selected>4%</option> 
+          <option value="5">5%</option> 
+          <option value="6">6%</option> 
+          <option value="7">7%</option> 
+          <option value="8">8%</option> 
+          <option value="9">9%</option> 
+          <option value="10">10%</option> 
+        </select> 
+      </div> 
+    </div> 
+    <div style="font-weight: 600; font-size: 1.0rem; color: #F59E0B; margin-top: 15px; margin-bottom: 5px;">From which account will you pull first?</div> 
+    <div class="form-group"> 
+      <label for="withdrawalStrategy">Account Withdrawal Priority <span class="req">Required</span></label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="withdrawalStrategy" required> 
+          <option value="Traditional First" selected>Traditional First</option>
+          <option value="Roth First">Roth First</option> 
+        </select> 
+      </div> 
+    </div> 
+    <!-- 1. Choose Method --> 
+    <div style="font-weight: 600; font-size: 1.0rem; color: #10B981; margin-bottom: 5px;">How much? </div> 
+    <div class="form-group"> 
+      <label for="withdrawalMethod">Withdrawal Type</label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="withdrawalMethod"> 
+          <option value="percentage" selected>Percentage (%)</option> 
+          <option value="fixed">Fixed Amount ($)</option> 
+        </select> 
+      </div> 
+    </div> 
+    <!-- 2. Percentage Input (Visible by default) --> 
+    <div class="form-group" id="percentageWrapper"> 
+      <label for="percentWithdrawalFromRetirement">Withdrawal Rate Target (%)</label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="percentWithdrawalFromRetirement"> 
+          <option value="2">2%</option> 
+          <option value="3">3%</option> 
+          <option value="4" selected>4%</option> 
+          <option value="5">5%</option> 
+          <option value="6">6%</option> 
+          <option value="7">7%</option> 
+          <option value="8">8%</option> 
+          <option value="9">9%</option> 
+          <option value="10">10%</option> 
+          <option value="11">11%</option> 
+          <option value="12">12%</option> 
+          <option value="13">13%</option> 
+          <option value="14">14%</option> 
+          <option value="15">15%</option> 
+        </select> 
+      </div> 
+      <label for="withdrawalOption">Withdrawal Calculation Method</label> 
+      <div class="input-wrapper select-arrow"> 
+        <select id="withdrawalOption"> 
+          <option value="Option A" selected>Option A: Percentage of Combined Traditional/Roth IRA Portfolio</option> 
+          <option value="Option B">Option B: Percentage of Active Drawing Account Only</option> 
+        </select> 
+      </div> 
+    </div> 
+    
+    <!-- 3. UPGRADED: Dynamic Fixed Amount Age Tiers Row Structure --> 
+    <div class="form-group" id="fixedAmountWrapper" style="display: none; flex-direction: column; gap: 10px;"> 
+      <label style="margin-bottom: 2px;">Fixed Withdrawal Age Tiers</label> 
+      
+      <!-- Hidden fallback element to prevent script errors looking for the old input variable -->
+      <input type="hidden" id="fixedWithdrawalAmount" value="0">
+
+      <!-- Tier 1 Entry Block (Locked to Retirement Age) -->
+    <div style="display: flex; gap: 8px; align-items: center; width: 100%;"> 
+    <span style="color: #8a8a8f; font-size: 0.85rem; font-weight: 600; width: 50px;">Tier 1:</span> 
+    <div class="input-wrapper" style="width: 100px; margin-bottom: 0;">
+        <!-- Added readonly and a grayed-out look so users know it is locked -->
+        <input type="number" id="wdAge1" placeholder="Age" readonly style="text-align: center; opacity: 0.6; background: rgba(255,255,255,0.05); cursor: not-allowed;"> 
+    </div>
+    <div class="input-wrapper" style="flex: 1; margin-bottom: 0;">
+        <input type="number" id="wdAmt1" placeholder="Annual Amount ($)" min="0"> 
+    </div>
+    </div>
+
+
+      <!-- Tier 2 Entry Block -->
+      <div style="display: flex; gap: 8px; align-items: center; width: 100%;"> 
+        <span style="color: #8a8a8f; font-size: 0.85rem; font-weight: 600; width: 50px;">Tier 2:</span> 
+        <div class="input-wrapper" style="width: 100px; margin-bottom: 0;">
+          <input type="number" id="wdAge2" placeholder="Age" min="0" style="text-align: center;"> 
+        </div>
+        <div class="input-wrapper" style="flex: 1; margin-bottom: 0;">
+          <input type="number" id="wdAmt2" placeholder="Annual Amount ($)" min="0"> 
+        </div>
+      </div> 
+
+      <!-- Tier 3 Entry Block -->
+      <div style="display: flex; gap: 8px; align-items: center; width: 100%;"> 
+        <span style="color: #8a8a8f; font-size: 0.85rem; font-weight: 600; width: 50px;">Tier 3:</span> 
+        <div class="input-wrapper" style="width: 100px; margin-bottom: 0;">
+          <input type="number" id="wdAge3" placeholder="Age" min="0" style="text-align: center;"> 
+        </div>
+        <div class="input-wrapper" style="flex: 1; margin-bottom: 0;">
+          <input type="number" id="wdAmt3" placeholder="Annual Amount ($)" min="0"> 
+        </div>
+      </div> 
+    </div> 
+
+    <!-- NEW: Real-Time Age Tier Error Alert Box -->
+    <div id="tierLimitErrorAlert" style="display: none; align-items: center; gap: 10px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 6px; padding: 10px; margin-top: 15px; margin-bottom: -5px;">
+    <span style="color: #ef4444; font-size: 1.1rem; font-weight: bold;">⚠️</span>
+    <div id="tierErrorAlertText" style="color: #fff; font-size: 0.85rem; font-weight: 600; line-height: 1.4;"></div>
+    </div>
+
+    <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+      <button type="button" class="form-btn cancel-btn">Cancel</button> 
+      <button type="submit" class="form-btn submit-btn">Save Strategy</button> 
+    </div> 
+  </form> 
+</div>
+
+
+  <!-- FORM 2: SOCIAL SECURITY PROFILE MODAL --> 
+<div id="socialSecurityForm" class="modal-window" style="display: none;">
+    <div class="modal-header">
+        <h2>Social Security Profile</h2>
+    </div>
+    
+    <form class="modal-form" onsubmit="event.preventDefault();"> 
+        
+        <!-- Outer Row (Matches MBCBP Style Exactly) -->
+        <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;"> 
+            <div>
+                <div style="font-weight: 600; font-size: 0.95rem;">I believe Social Security will be solvent for my retirement</div>
+                <div style="color: #8a8a8f; align-items: center; font-size: 0.8rem; margin-top: 2px;">Incorporate Social Security income into retirement table</div>
+            </div>
+            <label class="switch-toggle">
+                <input type="checkbox" id="incorporateSocialSecurity">
+                <span class="slider-round"></span>
+            </label>
+        </div> 
+        
+        <!-- Hidden Inputs Group (Matches MBCBP Style Exactly) -->
+        <div id="socialSecurityInputsGroup" style="display: none; flex-direction: column; gap: 1.25rem; margin-top: 10px;">
+            
+            <!-- Starting Claim Age Selector -->
+            <div class="form-group"> 
+                <label style="color: #fff; display: block; margin-bottom: 5px;">Age You Start Collecting <span class="req" style="color: #ff4d4d;">Required</span></label> 
+                <div class="input-wrapper select-arrow"> 
+                    <select id="socialSecurityAge"> 
+                        <option value="62">62 (Earliest Benefit)</option>
+                        <option value="63">63</option>
+                        <option value="64">64</option>
+                        <option value="65" selected>65</option>
+                        <option value="66">66</option>
+                        <option value="67">67 (Full Retirement Age)</option>
+                        <option value="68">68</option>
+                        <option value="69">69</option>
+                        <option value="70">70 (Max Deferred Credits)</option> 
+                    </select> 
+                </div> 
+            </div> 
+
+            <!-- Manual Override Benefit Input -->
+            <div class="form-group">
+                <label style="color: #fff; display: block; margin-bottom: 5px;">Optional: Manual Monthly Benefit Estimate Override </label>
+                <div class="input-wrapper">
+                    <input type="number" id="manualBenefitEstimate" value="0" min="0" placeholder="$0.00">
+                </div>
+            </div>
+            
+        </div> 
+
+        <!-- Info Link -->
+<div style="margin-top: 10px; margin-bottom: 5px; text-align: center;">
+    <span class="nested-info-link" style="cursor: pointer; color: #3B82F6; text-decoration: underline; font-size: 0.85rem;" onclick="document.getElementById('netSSPopup').style.display='flex'">Learn about how Social Security benefits are calculated</span>
+</div>
+
+
+        <!-- Standard Core Form Actions -->
+        <div class="form-actions" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: flex-end; gap: 12px; width: 100%;"> 
+            <button type="button" class="form-btn cancel-btn">Cancel</button> 
+            <button type="submit" class="form-btn submit-btn">Save Changes</button> 
+        </div> 
+    </form> 
+</div> <!-- 💡 SEALS THE OUTER WINDOW WRAPPER CONTAINER CLEANLY -->
+
+
+<!-- FIXED NESTED POPUP WINDOW CONTAINER (Placed outside the form wrapper) -->
+<div id="netSSPopup" class="nested-modal-overlay" 
+     style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; padding: 20px; box-sizing: border-box;" 
+     onclick="if(event.target === this) { this.style.display='none'; event.stopPropagation(); }">
+
+  <div class="nested-modal-box" 
+       style="background: #262629; padding: 20px; border-radius: 8px; max-width: 600px; width: 95%; max-height: 85vh; display: flex; flex-direction: column; box-sizing: border-box;" 
+       onclick="event.stopPropagation();">
+    
+    <!-- Scrollable container wrapper for the text details -->
+    <div style="color: #fff; font-family: sans-serif; line-height: 1.5; overflow-y: auto; flex-grow: 1; padding-right: 10px; margin-bottom: 15px;">
+
+      <!-- SECTION 1 -->
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">The Inputs the Code Looks For</h3>
+      <p style="font-size: 1rem; margin: 0 0 15px 0; font-weight: 500; color: #e0e0e0;">
+        To run the calculation, the code pulls from three specific inputs:
+      </p>
+      <ul style="margin: 0 0 25px 0; padding-left: 20px; color: #e0e0e0;">
+        <li style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">
+          <strong>Birth Date (<code>birthDate</code>):</strong> Read from your Career Form to calculate your precise Full Retirement Age (FRA).
+        </li>
+        <li style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">
+          <strong>Claim Age (<code>socialSecurityAge</code>):</strong> Read from your Social Security Form to determine if your benefit will face an early-claiming reduction penalty or gain a delayed-claiming credit.
+        </li>
+        <li style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">
+          <strong>Earnings History Cache (<code>this.earningsHistoryCache</code>):</strong> This object maps your historical career earnings across calendar years to figure out your <strong>Average Indexed Monthly Earnings (AIME)</strong>.
+        </li>
+      </ul>
+
+      <hr style="border: 0; border-top: 1px solid #444; margin: 20px 0;">
+
+      <!-- SECTION 2 -->
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">What Income Is the Code Looking At?</h3>
+      <p style="font-size: 1rem; margin: 0 0 15px 0; font-weight: 500; color: #e0e0e0;">
+        The script evaluates your <strong>annual gross earnings history from the year 1985 through 2026</strong>. However, the calculation does not look at your entire raw income unconditionally; it applies two strict filters to mirror actual federal rules:
+      </p>
+      <ul style="margin: 0; padding-left: 20px; color: #e0e0e0;">
+        <li style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">
+          <strong>Capped at the Maximum Capped Wage Base:</strong> For every single year evaluated in your data loop, the code automatically limits your earnings to the official IRS statutory maximum taxable wage base for that specific calendar year. For example, in the code loop, your raw pilot earnings for the year 2026 are capped at a maximum of <strong>$181,800</strong> (any income you earn above that threshold is ignored, as it is exempt from Social Security payroll taxes).
+        </li>
+        <li style="font-size: 1rem; margin-bottom: 10px; font-weight: 500;">
+          <strong>The Highest 35 Years of Earnings:</strong> The engine indexes all of your capped earnings to account for national wage inflation over time. It then automatically sorts your historical calendar profile from highest to lowest, extracts <strong>only your top 35 highest-earning years</strong>, sums them together, and divides that total by 420 months to calculate your structural <strong>AIME base pool value</strong>.
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Pinned Footer Close Button -->
+    <div style="display: flex; justify-content: flex-end; flex-shrink: 0;">
+      <button type="button" class="nested-modal-close-btn" 
+              style="padding: 8px 16px; background: #444; color: #fff; border: none; border-radius: 4px; cursor: pointer;"
+              onclick="document.getElementById('netSSPopup').style.display='none'; event.stopPropagation();">Close</button>
+    </div>
+  </div>
+</div>
+
+  <!-- FORM 3: TAX PROFILE MODAL -->
+<div id="taxProfileModal" class="modal-window" style="display: none; background: #262629; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;">
+    <div class="modal-header">
+        <h2 style="color: #fff; font-size: 1.2rem;">Tax Profile</h2>
+    </div>
+    
+    <form id="taxProfileForm" class="modal-form">
+
+        <div class="form-group">
+            <label for="taxFilingStatus">Federal Filing Status <span class="req">Required</span></label>
+            <div class="input-wrapper select-arrow">
+                <select id="taxFilingStatus">
+                    <option value="single">Single</option>
+                    <option value="married_jointly" selected>Married Filing Jointly</option>
+                    <option value="married_separately">Married Filing Separately</option>
+                    <option value="head_household">Head of Household</option>
+                    <option value="qualifying_surviving_spouse">Qualifying Surviving Spouse</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="stateOfResidence">State of Residence <span class="req">Required</span></label>
+            <div class="input-wrapper select-arrow">
+                <select id="stateOfResidence">
+                    <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option>
+                    <option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID" selected>Idaho</option>
+                    <option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+                </select>
+            </div>
+        </div>
+        <div id="dynamicStateTaxPanel" class="tax-brackets-panel" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+            <div id="statePanelTitle" style="font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; color: #fff; text-align: center;">State Tax Reference</div>
+            <div id="statePanelBody" style="text-align: center; font-size: 0.9rem; color: #8a8a8f; font-weight: 600;">
+                Select a state to populate local 2026 tax rate profiles.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="deductionType">Deduction Method</label>
+            <div class="input-wrapper select-arrow">
+                <select id="deductionType">
+                    <option value="standard" selected>Standard Deduction</option>
+                    <option value="itemized">Itemized Deductions</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="itemizedDeductionGroup" style="display: none;">
+            <label for="manualItemizedAmount">Total Estimated Itemized Deductions (Optional)</label>
+            <div class="input-wrapper"><input type="number" id="manualItemizedAmount" value="0" min="0"></div>
+        </div>
+
+        <!-- NEW FUTURE PREDICTION SECTION: CUSTOM BRACKETS -->
+        <div style="border-top: 1px solid #3f3f46; margin-top: 20px; padding-top: 15px;">
+            <div class="form-group toggle-group" style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0 10px 0;">
+                <div style="font-weight: 600; font-size: 0.95rem; color: #fff;">Predict future bracket changes?</div>
+                <label class="switch-toggle"><input type="checkbox" id="predictCustomBrackets"><span class="slider-round"></span></label>
+            </div>
+
+            <div id="customBracketsContainer" style="display: none; background: #1e1e21; padding: 12px; border-radius: 6px; border: 1px solid #3f3f46;">
+                <div style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px; font-weight: 600; font-size: 0.8rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <div>Tax Rate (%)</div>
+                    <div>Up To Income Max ($)</div>
+                </div>
+                
+                <!-- Dynamic bracket row structures matching core inputs -->
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="10" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" value="11000" min="0" placeholder="Infinity for max row"></div>
+                </div>
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="12" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" value="44725" min="0"></div>
+                </div>
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="22" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" value="95375" min="0"></div>
+                </div>
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="24" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" value="182100" min="0"></div>
+                </div>
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="32" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" value="231250" min="0"></div>
+                </div>
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px; margin-bottom: 8px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="35" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" value="578125" min="0"></div>
+                </div>
+                <div class="bracket-row" style="display: grid; grid-template-columns: 2fr 3fr; gap: 10px;">
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-rate" value="37" min="0" max="100" step="0.1"></div>
+                    <div class="input-wrapper"><input type="number" class="custom-bracket-limit" placeholder="Remainder (Infinity)" readonly style="background: #262629; color: #71717a; cursor: not-allowed;"></div>
+                </div>
+                <div style="font-size: 0.75rem; color: #a1a1aa; margin-top: 8px; font-style: italic;">
+                    Adjust bracket inputs above to simulate future legislative changes.
+                </div>
+            </div>
+        </div>
+<div class="tax-brackets-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+    <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; color: #fff; text-align: center;">IRS Federal Tax Reference (2026)</div>
+    
+                    <!--"new year update"-->
+    <!-- 2026 STANDARD DEDUCTION BREAKDOWN -->
+    <div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 12px; text-align: center;">
+        <div style="font-weight: 800; font-size: 0.9rem; color: #fff; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.03em;">Standard Deductions</div>
+        <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; margin-bottom: 4px;">Single / Separately: <span style="color: #fff;">$16,100</span></div>
+        <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; margin-bottom: 4px;">Head of Household: <span style="color: #fff;">$24,150</span></div>
+        <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f;">Married Filing Jointly: <span style="color: #fff;">$32,200</span></div>
+    </div>
+
+    <!-- MARGINAL BRACKETS GRID -->
+    <div style="font-weight: 800; font-size: 0.9rem; color: #fff; margin-bottom: 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.03em;">Marginal Tax Rate Income Ceilings</div>
+    <div style="display: grid; grid-template-columns: 1fr 2fr 2fr 2fr; gap: 4px 8px; font-size: 0.8rem; font-weight: 700; color: #fff; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 6px;">
+        <div>Rate</div>
+        <div>Single</div>
+        <div>Head of HH</div>
+        <div>Jointly</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 2fr 2fr 2fr; gap: 6px 8px; font-size: 0.85rem; font-weight: 600; color: #8a8a8f;">
+        <!-- 10% Bracket -->
+        <div style="color: #fff; font-weight: 700;">10%</div>
+        <div>Up to $12,400</div>
+        <div>Up to $17,700</div>
+        <div>Up to $24,800</div>
+
+        <!-- 12% Bracket -->
+        <div style="color: #fff; font-weight: 700;">12%</div>
+        <div>Up to $50,400</div>
+        <div>Up to $67,450</div>
+        <div>Up to $100,800</div>
+
+        <!-- 22% Bracket -->
+        <div style="color: #fff; font-weight: 700;">22%</div>
+        <div>Up to $105,700</div>
+        <div>Up to $105,700</div>
+        <div>Up to $211,400</div>
+
+        <!-- 24% Bracket -->
+        <div style="color: #fff; font-weight: 700;">24%</div>
+        <div>Up to $201,775</div>
+        <div>Up to $201,750</div>
+        <div>Up to $403,550</div>
+
+        <!-- 32% Bracket -->
+        <div style="color: #fff; font-weight: 700;">32%</div>
+        <div>Up to $256,225</div>
+        <div>Up to $256,200</div>
+        <div>Up to $512,450</div>
+
+        <!-- 35% Bracket -->
+        <div style="color: #fff; font-weight: 700;">35%</div>
+        <div>Up to $640,600</div>
+        <div>Up to $640,600</div>
+        <div>Up to $768,700</div>
+
+        <!-- 37% Bracket -->
+        <div style="color: #fff; font-weight: 700;">37%</div>
+        <div>Over $640,600</div>
+        <div>Over $640,600</div>
+        <div>Over $768,700</div>
+    </div>
+</div>
+
+        <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="form-btn cancel-btn">Cancel</button>
+            <button type="submit" class="form-btn submit-btn">Save Profile</button>
+        </div>
+    </form>
+</div>
+        <!-- 1. PENSION DATA ENTRY FORM WINDOW --> 
+<div id="pensionModal" class="modal-window" style="display: none; background: #262629; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;"> 
+    <div class="modal-header"> 
+        <h2 style="color: #fff; font-size: 1.2rem;">Pension Data</h2> 
+    </div> 
+    <form id="pensionForm" class="modal-form"> 
+    <div class="form-group">
+        <label for="pensionMonthlyAmount">Monthly Pension Income (pre-tax)</label>
+        <div class="input-wrapper">
+            <input type="text" id="pensionMonthlyAmount" inputmode="decimal" min="0" placeholder="$0.00">
+        </div>
+    </div>
+        <div class="form-group">
+            <label for="pensionStartDate">Pension Start Date</label>
+            <div class="input-wrapper">
+                <input type="date" id="pensionStartDate" value="2035-01-01">
+            </div>
+        </div>
+        
+        <!-- Pension Reference Rule Information Panel -->
+        <div class="tax-brackets-panel" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; color: #fff; ">Tax Treatment Notice</div>
+            <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">This calculator treats pension payouts as 100% ordinary taxable income at both the federal and progressive state levels</div>
+        </div>
+
+        <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;"> 
+            <button type="button" class="form-btn cancel-btn">Cancel</button> 
+            <button type="submit" class="form-btn submit-btn">Save Pension</button> 
+        </div> 
+    </form> 
+</div>
+
+<!-- SUPPLEMENTAL INCOME DATA ENTRY FORM WINDOW -->
+<div id="supplementalIncomeModal" class="modal-window" style="display: none;"> 
+  <div class="modal-header"> 
+    <h2>Supplemental Income</h2> 
+  </div> 
+  <form class="modal-form" onsubmit="event.preventDefault();"> 
+    
+    <!-- Centered Header Section -->
+        <!-- Centered Header Section -->
+         <div class="tax-brackets-panel" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; color: #fff; ">What do you mean by Supplemental Income?</div>
+            <div style="font-weight: 600; font-size: 0.85rem; color: #8a8a8f; line-height: 1.4;">Perhaps you or your spouse plan to work part-time in "retirement." Or you have a tax-safe VA disability compensation. Below you have the option to identify two types of supplemental income.</div>
+        </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; margin-bottom: 5px;">
+      <div style="font-weight: 800; font-size: 1.0rem; color: #3B82F6;">Income #1</div>  
+    </div>
+
+    <div class="form-group" style="margin-top: 0px; margin-bottom: 5px;"> 
+  <label>Monthly Cash Inflow ($)</label> 
+  <div class="input-wrapper"> 
+    <input type="number" id="suppMonthlyAmount" value="0" min="0" placeholder="$0.00"> 
+  </div> 
+</div> 
+
+<!-- Income #1 Taxability Section with Tightened Spacing --> 
+<div class="form-group" style="margin-top: 0px; margin-bottom: 15px;"> 
+  <!-- REDUCED MARGIN-BOTTOM TO 4px -->
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 4px;"> 
+    <label>Is this Income Taxable?</label> 
+    <div style="color: #8a8a8f; font-size: 0.8rem; margin-top: 4px;">Check this box if this income faces an income tax drag</div> 
+  </div> 
+  <!-- REMOVED VERTICAL PADDING -->
+  <div class="toggle-group" style="display: flex; justify-content: center; align-items: center; padding: 0;"> 
+    <label class="switch-toggle"> 
+      <input type="checkbox" id="suppIsTaxable"> 
+      <span class="slider-round"></span> 
+    </label> 
+  </div> 
+</div> 
+
+<!-- ========================================================================= -->
+<!-- MATCHED UPDATED INCOME #2 BLOCK WITH TIGHTENED SPACING -->
+<!-- ========================================================================= -->
+ <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; margin-bottom: 5px;">
+      <div style="font-weight: 800; font-size: 1.0rem; color: #3B82F6;">Income #2</div>  
+    </div>
+<div class="form-group" style="margin-top: 15px; margin-bottom: 5px;"> 
+  <label>Income #2: Monthly Cash Inflow</label> 
+  <div class="input-wrapper"> 
+    <input type="number" id="suppMonthlyAmount2" value="0" min="0" placeholder="$0.00"> 
+  </div> 
+</div> 
+
+<!-- Income #2 Taxability Section with Tightened Spacing --> 
+<div class="form-group" style="margin-top: 0px; margin-bottom: 15px;"> 
+  <!-- REDUCED MARGIN-BOTTOM TO 4px -->
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 4px;"> 
+    <label>Is this Income Taxable?</label> 
+    <div style="color: #8a8a8f; font-size: 0.8rem; margin-top: 4px;">Check this box if this income faces an income tax drag</div> 
+  </div> 
+  <!-- REMOVED VERTICAL PADDING -->
+  <div class="toggle-group" style="display: flex; justify-content: center; align-items: center; padding: 0;"> 
+    <label class="switch-toggle"> 
+      <input type="checkbox" id="suppIsTaxable2"> 
+      <span class="slider-round"></span> 
+    </label> 
+  </div> 
+</div>
+
+
+
+    <!-- Unified Layout Actions --> 
+    <div class="form-actions" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);"> 
+      <button type="button" class="form-btn cancel-btn">Cancel</button> 
+      <button type="submit" class="form-btn submit-btn">Save Changes</button> 
+    </div> 
+  </form> 
+</div>
+
+
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
